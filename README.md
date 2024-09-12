@@ -29,24 +29,76 @@ La concesionaria de automóviles Prog.III para la cual usted trabaja en el área
 
 El proyecto consiste en desarrollar una API Rest para gestionar reclamos. Esta API deberá incluir un sistema de autenticación y autorización con tres perfiles distintos: administrador, empleado y cliente.
 
-La API Rest debe asegurar un manejo eficiente y seguro de los reclamos, garantizando que cada perfil tenga acceso únicamente a las funciones correspondientes a sus responsabilidades. Además se espera que sea segura, eficiente y fácil de integrar con los sistemas actuales de la empresa. 
+La API Rest debe asegurar un manejo eficiente y seguro de los reclamos, garantizando que cada perfil tenga acceso únicamente a las funciones correspondientes a sus responsabilidades. Además se espera que sea segura, eficiente y fácil de integrar con los sistemas actuales de la empresa.
 
 ## Objetivo
 
 Son objetivos de este Trabajo Final Integrador que el estudiante:
 
 - Ponga en práctica todos los conocimientos adquiridos durante el cursado de la asignatura
-desarrollando una API REST.
+  desarrollando una API REST.
 
 - Defina la estructura de los documentos y las relaciones entre estos.
 
-- Interactúe con una API Rest intercambiando información. 
+- Interactúe con una API Rest intercambiando información.
 
 ## Estructura del Proyecto
 
 La estructura del proyecto es la siguiente:
 
-A COMPLETAR
+#### 1. **/config**
+
+Contiene archivos de configuración como la conexión a la base de datos, variables de entorno, o cualquier configuración del servidor.
+
+#### 2. **/controllers**
+
+Maneja la lógica de negocio de la aplicación. Cada controlador se encarga de recibir, procesar y enviar la respuesta adecuada para una solicitud HTTP en un endpoint.
+
+#### 3. **/middlewares**
+
+Aquí se ubican los middlewares que interceptan las solicitudes antes de llegar al controlador, por ejemplo, para autenticación.
+
+#### 4. **/models**
+
+Define los modelos de datos que representan entidades de la base de datos. En cada archivo se especifican las propiedades del modelo y métodos para realizar operaciones CRUD.
+
+#### 5. **/public**
+
+Se utiliza para servir archivos estáticos como imágenes, CSS, JS, etc. La subcarpeta /uploads almacenará archivos cargados por los usuarios, como imágenes de perfil.
+
+#### 6. **/routes**
+
+Define las rutas de la aplicación. Cada archivo en esta carpeta contiene la definición de los endpoints y qué controladores manejan las solicitudes.
+
+#### 7. **/schemas**
+
+Aquí se colocan los esquemas de validación, que garantizan que los datos enviados por el cliente tengan el formato correcto.
+
+#### 8. **/services**
+
+Los servicios encapsulan la lógica de procesos específicos que pueden ser reutilizados en varios controladores.
+
+#### 9. **/templates**
+
+Contiene plantillas de correos electrónicos o documentos que se generen dinámicamente.
+
+#### 10. **app.js**
+
+Archivo principal que configura el servidor Express. Aquí se cargan los middlewares, rutas, y se inicializa la aplicación.
+
+#### 11. **README.md**
+
+Instrucciones y documentación básica sobre cómo ejecutar el proyecto.
+
+#### 12. **.gitignore**
+
+Archivo que define qué archivos o carpetas deben ser ignorados por Git (como node_modules o archivos de configuración locales).
+
+#### 13. **package.json**
+
+Definen las dependencias del proyecto y versiones exactas para mantener consistencia en los entornos de desarrollo.
+
+## Dependencias
 
 ## Dependencias
 
@@ -54,11 +106,16 @@ Este proyecto usa las siguientes librerías:
 
 ### Librerías para el usuario final
 
-A COMPLETAR
+- [Express](https://www.npmjs.com/package/express): Framework minimalista para aplicaciones web en Node.js.
+- [Dotenv](https://www.npmjs.com/package/dotenv): Carga variables de entorno desde un archivo `.env`.
+- [MySQL2](https://www.npmjs.com/package/mysql2): Cliente MySQL para Node.js.
+- [Handlebars](https://www.npmjs.com/package/handlebars): Motor de plantillas para generar HTML dinámico.
+- [Joi](https://www.npmjs.com/package/joi): Librería para validación de datos.
+- [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken): Implementación de JSON Web Tokens (JWT) para autenticación.
 
 ### Librerías de desarrollo
 
-A COMPLETAR
+- [Nodemon](https://www.npmjs.com/package/nodemon): Herramienta que reinicia automáticamente el servidor al detectar cambios en los archivos durante el desarrollo.
 
 ## Instalación y Configuración
 
@@ -80,6 +137,12 @@ Para instalar y configurar el proyecto, sigue estos pasos:
 
    ```bash
    npm run dev
+   ```
+
+   o
+
+   ```bash
+   npm run start
    ```
 
 ## Uso del Proyecto
