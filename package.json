@@ -20,6 +20,13 @@
         "jsonwebtoken": "^8.5.1"
     },
     "devDependencies": {
-        "nodemon": "^2.0.22"
+        "nodemon": "^2.0.22",
+        "semistandard": "^17.0.0"
+    },
+    "eslintConfig": {
+    "extends": "./node_modules/semistandard/eslintrc.json",
+    "rules": {
+      "indent": ["error", 4]
     }
+  }
 }
