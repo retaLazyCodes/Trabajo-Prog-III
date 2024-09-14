@@ -2,10 +2,11 @@
     "name": "trabajo-prog-3",
     "version": "1.0.0",
     "description": "Trabajo Integrador - Programación III",
-    "main": "src/app.js",
+    "main": "src/index.js",
+    "type": "module",
     "scripts": {
-        "start": "node src/app.js",
-        "dev": "nodemon src/app.js"
+        "start": "node src/index.js",
+        "dev": "nodemon src/index.js"
     },
     "keywords": [],
     "author": "Gerardi Mauro Alejandro, Gerol Javier Ignacio, Retamar Brian Leonel, Romanoli José Alberto",
@@ -19,6 +20,13 @@
         "jsonwebtoken": "^8.5.1"
     },
     "devDependencies": {
-        "nodemon": "^2.0.22"
+        "nodemon": "^2.0.22",
+        "semistandard": "^17.0.0"
+    },
+    "eslintConfig": {
+    "extends": "./node_modules/semistandard/eslintrc.json",
+    "rules": {
+      "indent": ["error", 4]
     }
+  }
 }
