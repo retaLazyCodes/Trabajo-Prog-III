@@ -14,7 +14,7 @@ jobs:
     steps:
     # Check out the fork's repository
     - name: Checkout Fork
-      uses: actions/checkout@v4.1.7
+      uses: actions/checkout@v4
       with:
         # Recoge el historial completo para poder hacer los merge correctamente
         fetch-depth: 0
@@ -25,10 +25,10 @@ jobs:
         git remote add upstream https://github.com/Maure-dev/Trabajo-Prog-III.git
         git fetch upstream
 
-    # Fusiona los cambios de 'upstream/main' en 'main'
+    # Fusiona los cambios de 'upstream/dev' en 'dev'
     - name: Merge Upstream Changes
       run: |
-        git checkout dev
+        git checkout -b dev origin/dev
         git merge upstream/dev
 
     # Envía los cambios al fork en GitHub
