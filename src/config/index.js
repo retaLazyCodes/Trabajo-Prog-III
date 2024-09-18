@@ -10,7 +10,14 @@ const {
 const config = {
     NODEMAILER_EMAIL,
     NODEMAILER_PASSWORD,
-    PORT: process.env.PORT ? process.env.PORT : DEV_PORT
+    server: {
+        PORT: process.env.PORT ? process.env.PORT : DEV_PORT,
+        routes: {
+            users: '/api/users',
+            claims: '/api/claims',
+            auth: '/api/auth'
+        }
+    }
 };
 
 export { config };
