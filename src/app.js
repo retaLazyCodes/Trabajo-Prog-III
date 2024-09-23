@@ -1,4 +1,9 @@
 import express from 'express';
+import { config } from './config/index.js';
+import { userRouter } from './routes/index.js';
+import { notFound } from './middlewares/notFound.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // only for test db connection
 import './config/db.js';
