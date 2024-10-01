@@ -15,7 +15,8 @@ const config = {
         routes: {
             users: '/api/users',
             claims: '/api/claims',
-            auth: '/api/auth'
+            auth: '/api/auth',
+            email: '/api/email'
         }
     }
 };
