@@ -3,12 +3,11 @@ import { mapFields } from './utils.js';
 import { config } from '../config/index.js';
 
 class User {
-    constructor (userId, name, lastname, email, password, userType, image, active) {
+    constructor (userId, name, lastname, email, userType, image, active) {
         this.userId = userId;
         this.name = name;
         this.lastname = lastname;
         this.email = email;
-        this.password = password;
         this.userType = userType;
         this.image = image;
         this.active = active;
@@ -16,13 +15,12 @@ class User {
 
     static async getAll () {
         try {
-            const [rows] = await pool.query('SELECT * FROM usuarios');
+            const [rows] = await pool.query('SELECT * FROM usuarios WHERE idTipoUsuario = 2');
             if (rows.length) {
                 return rows.map((user) =>
                     new User(user.idUsuario, user.nombre,
                         user.apellido, user.correoElectronico,
-                        user.contrasenia, user.idTipoUsuario,
-                        user.imagen, user.activo
+                        user.idTipoUsuario, user.imagen, user.activo
                     )
                 );
             }
@@ -35,13 +33,12 @@ class User {
 
     static async findById (userId) {
         try {
-            const [rows] = await pool.query('SELECT * FROM usuarios WHERE idUsuario = ?', [userId]);
+            const [rows] = await pool.query('SELECT * FROM usuarios WHERE idUsuario = ? AND idTipoUsuario = 2', [userId]);
             if (rows.length) {
                 const user = rows[0];
                 return new User(user.idUsuario, user.nombre,
                     user.apellido, user.correoElectronico,
-                    user.contrasenia, user.idTipoUsuario,
-                    user.imagen, user.activo
+                    user.idTipoUsuario, user.imagen, user.activo
                 );
             }
             return null;
@@ -53,13 +50,12 @@ class User {
 
     static async findByEmail (email) {
         try {
-            const [rows] = await pool.query('SELECT * FROM usuarios WHERE correoElectronico = ?', [email]);
+            const [rows] = await pool.query('SELECT * FROM usuarios WHERE correoElectronico = ? AND idTipoUsuario = 2', [email]);
             if (rows.length) {
                 const user = rows[0];
                 return new User(user.idUsuario, user.nombre,
                     user.apellido, user.correoElectronico,
-                    user.contrasenia, user.idTipoUsuario,
-                    user.imagen, user.activo
+                    user.idTipoUsuario, user.imagen, user.activo
                 );
             }
             return null;
@@ -70,7 +66,8 @@ class User {
     }
 
     static async create (userData, file) {
-        const { name, lastname, email, password, userType, active } = userData;
+        const { name, lastname, email, password, active } = userData;
+        const USER_TYPE = 2; // Empleado
         try {
             let imagePath = null;
             if (file) {
@@ -78,9 +75,9 @@ class User {
             }
             const [result] = await pool.query(
                 'INSERT INTO usuarios (nombre, apellido, correoElectronico, contrasenia, idTipoUsuario, imagen, activo) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [name, lastname, email, password, userType, imagePath, active]
+                [name, lastname, email, password, USER_TYPE, imagePath, active]
             );
-            return new User(result.insertId, name, lastname, email, password, userType, imagePath, active);
+            return new User(result.insertId, name, lastname, email, USER_TYPE, imagePath, active);
         } catch (err) {
             console.error('Error creating user:', err);
             throw err;
@@ -90,9 +87,9 @@ class User {
     static async update (fieldsToUpdate, values, file) {
         try {
             if (file) {
-                fieldsToUpdate.push('imagen');
+                fieldsToUpdate.push('imagen = ?');
                 const imagePath = `http://localhost:${config.server.PORT}/uploads/` + file.filename;
-                values.push(imagePath);
+                values.splice(values.length - 1, 0, imagePath);
             }
             const mappedFields = mapFields(fieldsToUpdate);
             const query = `UPDATE usuarios SET ${mappedFields.join(', ')} WHERE idUsuario = ?`;
