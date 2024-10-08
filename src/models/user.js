@@ -3,7 +3,7 @@ import { mapFields } from './utils.js';
 import { config } from '../config/index.js';
 
 class User {
-    constructor(userId, name, lastname, email, password, userType, image, active) {
+    constructor (userId, name, lastname, email, password, userType, image, active) {
         this.userId = userId;
         this.name = name;
         this.lastname = lastname;
@@ -14,7 +14,7 @@ class User {
         this.active = active;
     }
 
-    static async getAll() {
+    static async getAll () {
         try {
             const [rows] = await pool.query('SELECT * FROM usuarios');
             if (rows.length) {
@@ -33,7 +33,7 @@ class User {
         }
     }
 
-    static async findById(userId) {
+    static async findById (userId) {
         try {
             const [rows] = await pool.query('SELECT * FROM usuarios WHERE idUsuario = ?', [userId]);
             if (rows.length) {
@@ -51,7 +51,7 @@ class User {
         }
     }
 
-    static async findByEmail(email) {
+    static async findByEmail (email) {
         try {
             const [rows] = await pool.query('SELECT * FROM usuarios WHERE correoElectronico = ?', [email]);
             if (rows.length) {
@@ -69,7 +69,7 @@ class User {
         }
     }
 
-    static async create(userData, file) {
+    static async create (userData, file) {
         const { name, lastname, email, password, userType, active } = userData;
         try {
             let imagePath = null;
@@ -87,7 +87,7 @@ class User {
         }
     }
 
-    static async update(fieldsToUpdate, values, file) {
+    static async update (fieldsToUpdate, values, file) {
         try {
             if (file) {
                 fieldsToUpdate.push('imagen');
