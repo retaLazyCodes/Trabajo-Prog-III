@@ -32,7 +32,7 @@ const updateUser = async (req, res) => {
             }
         }
 
-        if (fieldsToUpdate.length === 0 || !req.file) {
+        if (fieldsToUpdate.length === 0 && !req.file) {
             return res.status(400).json({ message: 'No fields to update' });
         }
 
