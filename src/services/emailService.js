@@ -14,8 +14,8 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: NODEMAILER_EMAIL,
-        pass: NODEMAILER_PASSWORD,
-    },
+        pass: NODEMAILER_PASSWORD
+    }
 });
 
 transporter.use('compile', hbs({
@@ -23,30 +23,30 @@ transporter.use('compile', hbs({
         extname: '.hbs',
         layoutsDir: '',
         defaultLayout: false,
-        partialsDir: path.join(__dirname, '../templates'),
+        partialsDir: path.join(__dirname, '../templates')
     },
     viewPath: path.join(__dirname, '../templates'),
-    extName: '.hbs',
+    extName: '.hbs'
 }));
 
 const sendEmail = async (req, res) => {
-    const { to, subject, nombre_usuario, id_reclamo, estado_reclamo, fecha_actualizacion } = req.body;
+    const { to, subject, userName, idClaim, statusClaim, dateUpdate } = req.body;
 
-    if (!to || !subject || !nombre_usuario || !id_reclamo || !estado_reclamo || !fecha_actualizacion) {
+    if (!to || !subject || !userName || !idClaim || !statusClaim || !dateUpdate) {
         return res.status(400).json({ message: 'Faltan datos para enviar el correo' });
     }
 
     const mailOptions = {
         from: NODEMAILER_EMAIL,
-        to: to,
-        subject: subject,
+        to,
+        subject,
         template: 'claimStatusNotification',
         context: {
-            nombre_usuario,
-            id_reclamo,
-            estado_reclamo,
-            fecha_actualizacion,
-        },
+            userName,
+            idClaim,
+            statusClaim,
+            dateUpdate
+        }
     };
 
     try {

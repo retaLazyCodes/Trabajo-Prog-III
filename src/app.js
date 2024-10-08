@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -22,7 +22,7 @@ app.use(
     userRouter
 );
 
-app.use(config.server.routes.email, emailRouter)
+app.use(config.server.routes.email, emailRouter);
 
 // custom middlewares
 app.use(notFound);

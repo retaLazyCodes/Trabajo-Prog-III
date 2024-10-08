@@ -1,5 +1,6 @@
 import { pool } from '../config/db.js';
 import { mapFields } from './utils.js';
+import { config } from '../config/index.js';
 
 class User {
     constructor (userId, name, lastname, email, password, userType, image, active) {
@@ -68,22 +69,31 @@ class User {
         }
     }
 
-    static async create (userData) {
-        const { name, lastname, email, password, userType, image, active } = userData;
+    static async create (userData, file) {
+        const { name, lastname, email, password, userType, active } = userData;
         try {
+            let imagePath = null;
+            if (file) {
+                imagePath = `http://localhost:${config.server.PORT}/uploads/` + file.filename;
+            }
             const [result] = await pool.query(
                 'INSERT INTO usuarios (nombre, apellido, correoElectronico, contrasenia, idTipoUsuario, imagen, activo) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [name, lastname, email, password, userType, image, active]
+                [name, lastname, email, password, userType, imagePath, active]
             );
-            return new User(result.insertId, name, lastname, email, password, userType, image, active);
+            return new User(result.insertId, name, lastname, email, password, userType, imagePath, active);
         } catch (err) {
             console.error('Error creating user:', err);
             throw err;
         }
     }
 
-    static async update (fieldsToUpdate, values) {
+    static async update (fieldsToUpdate, values, file) {
         try {
+            if (file) {
+                fieldsToUpdate.push('imagen');
+                const imagePath = `http://localhost:${config.server.PORT}/uploads/` + file.filename;
+                values.push(imagePath);
+            }
             const mappedFields = mapFields(fieldsToUpdate);
             const query = `UPDATE usuarios SET ${mappedFields.join(', ')} WHERE idUsuario = ?`;
             return await pool.query(query, values);
