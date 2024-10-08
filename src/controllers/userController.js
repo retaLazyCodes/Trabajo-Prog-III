@@ -7,7 +7,7 @@ const getUsers = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-    const newUser = await User.create(req.body);
+    const newUser = await User.create(req.body, req.file);
     res.status(201).json(newUser);
 };
 
@@ -32,11 +32,11 @@ const updateUser = async (req, res) => {
             }
         }
 
-        if (fieldsToUpdate.length === 0) {
+        if (fieldsToUpdate.length === 0 || !req.file) {
             return res.status(400).json({ message: 'No fields to update' });
         }
 
-        await User.update(fieldsToUpdate, [...values, id]);
+        await User.update(fieldsToUpdate, [...values, id], req.file);
         res.status(200).json({ message: 'User updated successfully' });
     } catch (err) {
         console.error('Error updating user:', err);
