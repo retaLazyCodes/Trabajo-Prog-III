@@ -16,7 +16,8 @@ const config = {
             users: '/api/users',
             claims: '/api/claims',
             auth: '/api/auth',
-            email: '/api/email'
+            email: '/api/email',
+            offices: '/api/offices'
         }
     }
 };
