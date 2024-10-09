@@ -1,14 +1,29 @@
 import { User } from '../models/user.js';
 
 const getUsers = async (req, res) => {
-    const users = await User.getAll();
-    console.log(users);
-    res.status(200).json(users);
+    try {
+        const users = await User.getAll();
+        res.status(200).json(users);
+    } catch (err) {
+        console.error('Error getting users:', err);
+        res.status(500).json({ error: 'Error getting users' });
+    }
 };
 
 const createUser = async (req, res) => {
-    const newUser = await User.create(req.body, req.file);
-    res.status(201).json(newUser);
+    try {
+        const { email } = req.body;
+        const userExists = await User.findByEmail(email);
+        if (userExists) {
+            return res.status(409).json({ message: 'Email is already taken' });
+        }
+
+        const newUser = await User.create(req.body, req.file);
+        res.status(201).json(newUser);
+    } catch (err) {
+        console.error('Error creating user:', err);
+        res.status(500).json({ error: 'Error creating user' });
+    }
 };
 
 const updateUser = async (req, res) => {
@@ -19,6 +34,14 @@ const updateUser = async (req, res) => {
         const user = await User.findById(id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Verificar si el email ya está en uso
+        if (updates.email) {
+            const emailExists = await User.findByEmail(updates.email);
+            if (emailExists && emailExists.userId.toString() !== id.toString()) {
+                return res.status(409).json({ message: 'Email is already taken' });
+            }
         }
 
         // Filtrar campos que se van a actualizar
