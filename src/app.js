@@ -1,6 +1,6 @@
 import express from 'express';
 import { config } from './config/index.js';
-import { userRouter, emailRouter } from './routes/index.js';
+import { userRouter, emailRouter, officeRouter } from './routes/index.js';
 import { notFound } from './middlewares/notFound.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -21,6 +21,8 @@ app.use(
     config.server.routes.users,
     userRouter
 );
+
+app.use(config.server.routes.offices, officeRouter);
 
 app.use(config.server.routes.email, emailRouter);
 
