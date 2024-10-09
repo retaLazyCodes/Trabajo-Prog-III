@@ -1,4 +1,5 @@
 import { Office } from '../models/office.js';
+import { User } from '../models/user.js';
 
 const getOffice = async (req, res) => {
     const office = await Office.getAllOffice();
@@ -44,6 +45,11 @@ const employeeAdd = async (req, res) => {
         const office = await Office.findOfficeById(officeId);
         if (!office) {
             return res.status(404).json({ message: 'Office not found' });
+        }
+        const employee = await User.findById(employeeId);
+        console.log(employee, "________________________aca");
+        if (!employee) {
+            return res.status(404).json({ message: 'Employee not found' });
         }
         await Office.addEmployee(officeId, employeeId);
         res.status(200).json({ message: 'Employee added successfully' });

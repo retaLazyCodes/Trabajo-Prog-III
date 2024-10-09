@@ -13,6 +13,6 @@ router.get('/', getOffice);
 router.post('/', createOffice);
 router.patch('/:officeId', updateOffice);
 router.post('/:officeId/employees/add', employeeAdd);
-router.patch('/:officeId/employees/remove', employeeRemove);
+router.delete('/:officeId/employees/remove', employeeRemove);
 
 export default router;
