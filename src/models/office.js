@@ -99,3 +99,32 @@ class Office {
 }
 
 export { Office };
+
+class UserInOffice {
+    constructor (userOfficeId, userId, officeId, active) {
+        this.userOfficeId = userOfficeId;
+        this.userId = userId;
+        this.officeId = officeId;
+        this.active = active;
+    }
+
+    static async employeeOfficeById (employeeId) {
+        try {
+            const [rows] = await pool.query('SELECT * FROM usuarios_oficinas WHERE idUsuario = ?', [employeeId]);
+            if (rows.length) {
+                const userOffice = rows[0];
+                return new UserInOffice(userOffice.userOfficeId,
+                    userOffice.userId,
+                    userOffice.officeId,
+                    userOffice.active
+                );
+            }
+            return null;
+        } catch (err) {
+            console.error('Error finding user in office by ID:', err);
+            throw err;
+        }
+    }
+}
+
+export { UserInOffice };
