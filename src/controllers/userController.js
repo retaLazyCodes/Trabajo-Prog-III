@@ -39,7 +39,7 @@ const updateUser = async (req, res) => {
         // Verificar si el email ya está en uso
         if (updates.email) {
             const emailExists = await User.findByEmail(updates.email);
-            if (emailExists && emailExists.userId !== id) {
+            if (emailExists && emailExists.userId.toString() !== id.toString()) {
                 return res.status(409).json({ message: 'Email is already taken' });
             }
         }
