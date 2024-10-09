@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import { User } from '../models/user.js';
 
 const getUsers = async (req, res) => {
@@ -12,13 +13,20 @@ const getUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email, password } = req.body;
         const userExists = await User.findByEmail(email);
         if (userExists) {
             return res.status(409).json({ message: 'Email is already taken' });
         }
 
-        const newUser = await User.create(req.body, req.file);
+        // Encriptar la contraseña antes de guardar
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const newUser = await User.create({
+            ...req.body,
+            password: hashedPassword
+        }, req.file);
         res.status(201).json(newUser);
     } catch (err) {
         console.error('Error creating user:', err);
@@ -50,8 +58,16 @@ const updateUser = async (req, res) => {
 
         for (const [key, value] of Object.entries(updates)) {
             if (value !== undefined) {
-                fieldsToUpdate.push(`${key} = ?`);
-                values.push(value);
+                // Si el campo es 'password', encriptar la nueva contraseña
+                if (key === 'password') {
+                    const salt = await bcrypt.genSalt(10);
+                    const hashedPassword = await bcrypt.hash(value, salt);
+                    fieldsToUpdate.push(`${key} = ?`);
+                    values.push(hashedPassword);
+                } else {
+                    fieldsToUpdate.push(`${key} = ?`);
+                    values.push(value);
+                }
             }
         }
 
