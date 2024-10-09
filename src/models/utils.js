@@ -5,7 +5,6 @@ export function mapFields (fields) {
         lastname: 'apellido',
         email: 'correoElectronico',
         password: 'contrasenia',
-        userType: 'idTipoUsuario',
         image: 'imagen'
     };
 
@@ -19,7 +18,6 @@ export function mapFields (fields) {
 
 export function mapOffices (fields) {
     const fieldMapping = {
-        officeId: 'idOficina',
         name: 'nombre',
         claimTypeId: 'idReclamoTipo',
         active: 'activo'
