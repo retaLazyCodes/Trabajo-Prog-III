@@ -3,14 +3,27 @@ import { mapFields } from './utils.js';
 import { config } from '../config/index.js';
 
 class User {
-    constructor (userId, name, lastname, email, userType, image, active) {
+    constructor (userId, name, lastname, email, password, userType, image, active) {
         this.userId = userId;
         this.name = name;
         this.lastname = lastname;
         this.email = email;
+        this.password = password;
         this.userType = userType;
         this.image = image;
         this.active = active;
+    }
+
+    getPublicData () {
+        return {
+            userId: this.userId,
+            name: this.name,
+            lastname: this.lastname,
+            email: this.email,
+            userType: this.userType,
+            image: this.image,
+            active: this.active
+        };
     }
 
     static async getAll () {
@@ -20,8 +33,8 @@ class User {
                 return rows.map((user) =>
                     new User(user.idUsuario, user.nombre,
                         user.apellido, user.correoElectronico,
-                        user.idTipoUsuario, user.imagen, user.activo
-                    )
+                        user.contrasenia, user.idTipoUsuario, user.imagen, user.activo
+                    ).getPublicData()
                 );
             }
             return [];
@@ -38,7 +51,7 @@ class User {
                 const user = rows[0];
                 return new User(user.idUsuario, user.nombre,
                     user.apellido, user.correoElectronico,
-                    user.idTipoUsuario, user.imagen, user.activo
+                    user.contrasenia, user.idTipoUsuario, user.imagen, user.activo
                 );
             }
             return null;
@@ -55,7 +68,7 @@ class User {
                 const user = rows[0];
                 return new User(user.idUsuario, user.nombre,
                     user.apellido, user.correoElectronico,
-                    user.idTipoUsuario, user.imagen, user.activo
+                    user.contrasenia, user.idTipoUsuario, user.imagen, user.activo
                 );
             }
             return null;
@@ -77,7 +90,7 @@ class User {
                 'INSERT INTO usuarios (nombre, apellido, correoElectronico, contrasenia, idTipoUsuario, imagen, activo) VALUES (?, ?, ?, ?, ?, ?, ?)',
                 [name, lastname, email, password, USER_TYPE, imagePath, active]
             );
-            return new User(result.insertId, name, lastname, email, USER_TYPE, imagePath, active);
+            return new User(result.insertId, name, lastname, email, password, USER_TYPE, imagePath, active);
         } catch (err) {
             console.error('Error creating user:', err);
             throw err;
