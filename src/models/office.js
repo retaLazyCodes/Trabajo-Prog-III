@@ -96,6 +96,19 @@ class Office {
             throw err;
         }
     }
+
+    static async employeeOfficeById (employeeId, officeId) {
+        try {
+            const [rows] = await pool.query('SELECT * FROM usuarios_oficinas WHERE idUsuario = ? AND idOficina = ? ', [employeeId, officeId]);
+            if (rows.length) {
+                return rows[0];
+            }
+            return null;
+        } catch (err) {
+            console.error('Error finding user in office by ID:', err);
+            throw err;
+        }
+    }
 }
 
 export { Office };

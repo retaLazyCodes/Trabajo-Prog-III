@@ -50,6 +50,10 @@ const employeeAdd = async (req, res) => {
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
+        const employeeInOffice = await Office.employeeOfficeById(employeeId, officeId);
+        if (employeeInOffice) {
+            return res.status(409).json({ message: 'Employee already exists in this office' });
+        }
         await Office.addEmployee(officeId, employeeId);
         res.status(200).json({ message: 'Employee added successfully' });
     } catch (err) {
@@ -71,7 +75,7 @@ const employeeRemove = async (req, res) => {
             return res.status(404).json({ message: 'Employee not found' });
         }
         await Office.removeEmployee(officeId, employeeId);
-        res.status(200).json({ message: 'Employee removed successfully' });
+        res.status(201).json({ message: 'Employee removed successfully' });
     } catch (err) {
         console.error('Error removing employee:', err);
         res.status(500).json({ error: 'Error removing employee' });
