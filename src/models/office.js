@@ -69,7 +69,7 @@ class Office {
             throw err;
         }
     }
-    
+
     static async removeOffice (officeId) {
         try {
             await pool.query('DELETE FROM oficinas WHERE idOficina = ?', [officeId]);
@@ -112,15 +112,3 @@ class Office {
 }
 
 export { Office };
-
-class UserInOffice {
-    constructor (userOfficeId, userId, officeId, active) {
-        this.userOfficeId = userOfficeId;
-        this.userId = userId;
-        this.officeId = officeId;
-        this.active = active;
-    }
-
-}
-
-export { UserInOffice };
