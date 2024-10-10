@@ -69,7 +69,7 @@ class Office {
             throw err;
         }
     }
-
+    
     static async removeOffice (officeId) {
         try {
             await pool.query('DELETE FROM oficinas WHERE idOficina = ?', [officeId]);
@@ -96,6 +96,19 @@ class Office {
             throw err;
         }
     }
+
+    static async employeeOfficeById (employeeId, officeId) {
+        try {
+            const [rows] = await pool.query('SELECT * FROM usuarios_oficinas WHERE idUsuario = ? AND idOficina = ? ', [employeeId, officeId]);
+            if (rows.length) {
+                return rows[0];
+            }
+            return null;
+        } catch (err) {
+            console.error('Error finding user in office by ID:', err);
+            throw err;
+        }
+    }
 }
 
 export { Office };
@@ -108,23 +121,6 @@ class UserInOffice {
         this.active = active;
     }
 
-    static async employeeOfficeById (employeeId) {
-        try {
-            const [rows] = await pool.query('SELECT * FROM usuarios_oficinas WHERE idUsuario = ?', [employeeId]);
-            if (rows.length) {
-                const userOffice = rows[0];
-                return new UserInOffice(userOffice.userOfficeId,
-                    userOffice.userId,
-                    userOffice.officeId,
-                    userOffice.active
-                );
-            }
-            return null;
-        } catch (err) {
-            console.error('Error finding user in office by ID:', err);
-            throw err;
-        }
-    }
 }
 
 export { UserInOffice };
