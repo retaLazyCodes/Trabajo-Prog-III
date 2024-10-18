@@ -13,19 +13,43 @@ const officeSchema = Joi.object({
     claimTypeId: Joi.number().integer().required(),
 })
 
+const updateUserSchema = Joi.object({
+  name: Joi.string().optional(),
+  lastname: Joi.string().optional(),
+  email: Joi.string().email().optional(),
+  password: Joi.string().optional(),
+  image: Joi.string().optional(),
+  active: Joi.boolean().optional(),
+}).or('name', 'lastname', 'email', 'password', 'image', 'active')
+.unknown(false);  // No permitir campos desconocidos
+
+const idSchema = Joi.number().integer().positive().required()
 
   // Funciones para validar datos
-export  function validateUser  (data)  {
+export  function validateUser  (data, res)  {
   const { error } = userSchema.validate(data);
   if (error) {
-    return error.details[0].message;
+    return res.status(400).json({ error: error.details[0].message });
   }
 };
 
-export function validateOffice  (data)  {
+export function validateOffice  (data, res)  {
   const { error } = officeSchema.validate(data);
   if (error) {
-    return error.details[0].message;
+    return res.status(400).json({ error: error.details[0].message });
   }
 };
 
+export function validateUpdateUser (data, res) {
+  const { error } = updateUserSchema.validate(data);
+  if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+  };
+}
+
+export  function validateId  (data, res)  {
+  const { error } = idSchema.validate(data);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+};

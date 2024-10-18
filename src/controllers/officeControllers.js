@@ -13,10 +13,8 @@ const createOffice = async (req, res) => {
             name:req.body.name,
             claimTypeId:req.body.claimTypeId,
             }
-        const validation = validateOffice(body)
-        if (validation){
-            return res.status(400).send(validation);
-        }
+        if (validateOffice(body, res)) return
+        
         const newOffice = await Office.createOffice(req.body);
         res.status(201).json(newOffice);
     } catch (err){
