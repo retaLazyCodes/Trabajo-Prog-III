@@ -1,6 +1,7 @@
 import { pool } from '../config/db.js';
 import { mapOffices } from './utils.js';
 
+
 class Office {
     constructor (officeId, name, claimTypeId, active) {
         this.officeId = officeId;
@@ -54,7 +55,7 @@ class Office {
             );
             return new Office(result.insertId, name, claimTypeId, active);
         } catch (err) {
-            console.error('Error creating office:', err);
+            // console.error('Error creating office:', err);
             throw err;
         }
     }

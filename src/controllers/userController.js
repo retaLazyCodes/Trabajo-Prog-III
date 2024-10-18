@@ -26,9 +26,9 @@ const createUser = async (req, res) => {
             password:req.body.password
         }
     
-        const validation = validateUser(body)
-        if (validation){
-            return res.status(400).send(validation);
+        const novalido = validateUser(body)
+        if (novalido){
+            return res.status(400).send(novalido);
         } 
 
         // Encriptar la contraseña antes de guardar

@@ -12,7 +12,7 @@ const {
 const pool = mysql.createPool({
     host: DB_HOST || 'localhost',
     user: DB_USER || 'root',
-    database: DB_NAME || 'facturacion',
+    database: DB_NAME || 'prueba_prog',
     password: DB_PASS || '',
     waitForConnections: true,
     connectionLimit: 10,

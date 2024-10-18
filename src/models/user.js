@@ -88,7 +88,7 @@ class User {
             }
             const [result] = await pool.query(
                 'INSERT INTO usuarios (nombre, apellido, correoElectronico, contrasenia, idTipoUsuario, imagen, activo) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [name, lastname, email, password, USER_TYPE, imagePath, active]
+                [name, lastname, email, password, USER_TYPE, imagePath, 1]
             );
             return new User(result.insertId, name, lastname, email, password, USER_TYPE, imagePath, active);
         } catch (err) {
