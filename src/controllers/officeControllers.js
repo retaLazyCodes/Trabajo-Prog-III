@@ -25,6 +25,9 @@ const createOffice = async (req, res) => {
 const updateOffice = async (req, res) => {
     const { officeId } = req.params;
     const updates = req.body;
+ 
+
+
     try {
         const office = await Office.findOfficeById(officeId);
         if (!office) {

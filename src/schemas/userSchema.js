@@ -23,7 +23,13 @@ const updateUserSchema = Joi.object({
 }).or('name', 'lastname', 'email', 'password', 'image', 'active')
 .unknown(false);  // No permitir campos desconocidos
 
+const updateOfficeSchema = Joi.object({
+  
+})
+
 const idSchema = Joi.number().integer().positive().required()
+
+const officeIdSchema = Joi.number().integer().positive().required()
 
   // Funciones para validar datos
 export  function validateUser  (data, res)  {
@@ -49,6 +55,13 @@ export function validateUpdateUser (data, res) {
 
 export  function validateId  (data, res)  {
   const { error } = idSchema.validate(data);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+};
+
+export  function validateOfficeId  (data, res)  {
+  const { error } = officeIdSchema.validate(data);
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
