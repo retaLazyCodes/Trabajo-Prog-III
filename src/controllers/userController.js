@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs';
 import { User } from '../models/user.js';
-import { validateUser, validateUpdateUser, validateId } from '../schemas/userSchema.js';
 
 const getUsers = async (req, res) => {
     try {
@@ -19,15 +18,6 @@ const createUser = async (req, res) => {
         if (userExists) {
             return res.status(409).json({ message: 'Email is already taken' });
         }
-        const body = {
-            name:req.body.name, 
-            lastname:req.body.lastname, 
-            email:req.body.email, 
-            password:req.body.password
-        }
-    
-        if (validateUser(body, res)) return
-        
 
         // Encriptar la contraseña antes de guardar
         const salt = await bcrypt.genSalt(10);
@@ -47,9 +37,6 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
     const { id } = req.params;
     const updates = req.body;
-    if (validateId(id, res)) return;
-    if (validateUpdateUser(updates, res)) return 
-
 
     try {
         const user = await User.findById(id);
@@ -60,12 +47,8 @@ const updateUser = async (req, res) => {
         // Verificar si el email ya está en uso
         if (updates.email) {
             const emailExists = await User.findByEmail(updates.email);
-            if (emailExists) { 
-                if (emailExists.userId.toString() !== id.toString()){
-                    return res.status(409).json({ message: 'Email is already taken by another person' });
-                } else {
-                    return res.status(409).json({ message: 'Email is already yours' });
-                }
+            if (emailExists && emailExists.userId.toString() !== id.toString()) {
+                return res.status(409).json({ message: 'Email is already taken' });
             }
         }
 

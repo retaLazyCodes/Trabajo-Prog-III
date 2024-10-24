@@ -1,68 +1,57 @@
-import Joi from "joi"
+import Joi from 'joi';
 
-// Esquemas de validación
 const userSchema = Joi.object({
-    name: Joi.string().min(3).max(30).required(),
-    lastname: Joi.string().min(3).max(30).required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().min(6).required(),
-  });
-
-const officeSchema = Joi.object({
-    name: Joi.string().min(3).max(50).required(),
-    claimTypeId: Joi.number().integer().required(),
-})
+    name: Joi.string()
+        .min(3).message('El nombre debe tener al menos 3 caracteres.')
+        .max(30).message('El nombre no debe tener más de 30 caracteres.')
+        .required().messages({
+            'string.empty': 'El campo "name" es obligatorio.',
+            'any.required': 'El campo "name" es obligatorio.'
+        }),
+    lastname: Joi.string()
+        .min(3).message('El apellido debe tener al menos 3 caracteres.')
+        .max(30).message('El apellido no debe tener más de 30 caracteres.')
+        .required().messages({
+            'string.empty': 'El campo "lastname" es obligatorio.',
+            'any.required': 'El campo "lastname" es obligatorio.'
+        }),
+    email: Joi.string()
+        .email().message('El correo electrónico no es válido.')
+        .required().messages({
+            'string.empty': 'El campo "email" es obligatorio.',
+            'any.required': 'El campo "email" es obligatorio.'
+        }),
+    password: Joi.string()
+        .min(6).message('La contraseña debe tener al menos 6 caracteres.')
+        .required().messages({
+            'string.empty': 'El campo "password" es obligatorio.',
+            'any.required': 'El campo "password" es obligatorio.'
+        })
+});
 
 const updateUserSchema = Joi.object({
-  name: Joi.string().optional(),
-  lastname: Joi.string().optional(),
-  email: Joi.string().email().optional(),
-  password: Joi.string().optional(),
-  image: Joi.string().optional(),
-  active: Joi.boolean().optional(),
-}).or('name', 'lastname', 'email', 'password', 'image', 'active')
-.unknown(false);  // No permitir campos desconocidos
+    name: Joi.string().messages({
+        'string.base': 'El campo "name" debe ser un texto.'
+    }),
+    lastname: Joi.string().messages({
+        'string.base': 'El campo "lastname" debe ser un texto.'
+    }),
+    email: Joi.string().email().messages({
+        'string.email': 'El correo electrónico no es válido.'
+    }),
+    password: Joi.string().messages({
+        'string.base': 'El campo "password" debe ser un texto.'
+    }),
+    image: Joi.string().messages({
+        'string.base': 'El campo "image" debe ser una URL válida.'
+    }),
+    active: Joi.number().valid(0, 1).messages({
+        'number.base': 'El campo "active" debe ser un número.',
+        'any.only': 'El campo "active" debe ser 0 o 1.'
+    })
+}).or('name', 'lastname', 'email', 'password', 'image', 'active').unknown(false);
 
-const updateOfficeSchema = Joi.object({
-  
-})
-
-const idSchema = Joi.number().integer().positive().required()
-
-const officeIdSchema = Joi.number().integer().positive().required()
-
-  // Funciones para validar datos
-export  function validateUser  (data, res)  {
-  const { error } = userSchema.validate(data);
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
-};
-
-export function validateOffice  (data, res)  {
-  const { error } = officeSchema.validate(data);
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
-};
-
-export function validateUpdateUser (data, res) {
-  const { error } = updateUserSchema.validate(data);
-  if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-  };
-}
-
-export  function validateId  (data, res)  {
-  const { error } = idSchema.validate(data);
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
-};
-
-export  function validateOfficeId  (data, res)  {
-  const { error } = officeIdSchema.validate(data);
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
+export {
+    userSchema,
+    updateUserSchema
 };

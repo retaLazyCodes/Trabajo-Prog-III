@@ -6,12 +6,13 @@ import {
     employeeAdd,
     employeeRemove
 } from '../controllers/officeControllers.js';
+import { validateOffice, validateUpdateOffice } from '../middlewares/validateOffice.js';
 
 const router = Router();
 
 router.get('/', getOffice);
-router.post('/', createOffice);
-router.patch('/:officeId', updateOffice);
+router.post('/', validateOffice, createOffice);
+router.patch('/:officeId', validateUpdateOffice, updateOffice);
 router.post('/:officeId/employees/add', employeeAdd);
 router.delete('/:officeId/employees/remove', employeeRemove);
 
