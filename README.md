@@ -120,6 +120,7 @@ Este proyecto usa las siguientes librerías:
 - [Multer](https://www.npmjs.com/package/multer): Implementación de Multer para el manejo de archivos.
 - [Nodemailer](https://www.npmjs.com/package/nodemailer): Implementación de Nodemailer para generar HTML dinámico.
 - [Nodemailer-express-handlebars](https://www.npmjs.com/package/nodemailer-express-handlebars): Implementación de Nodemailer para generar HTML dinámico.
+- [csv-writer](https://www.npmjs.com/package/csv-writer): Implementación de Csv-writer para generar archivos CSV.
 
 ### Librerías de desarrollo
 
