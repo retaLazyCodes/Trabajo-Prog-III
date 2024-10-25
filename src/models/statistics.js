@@ -1,7 +1,7 @@
 import { pool } from '../config/db.js';
 
 class Statistics {
-    static async getStatistics() {
+    static async getStatistics () {
         try {
             const [rows] = await pool.query('CALL get_statistics()');
             const statistics = {
@@ -18,7 +18,7 @@ class Statistics {
         }
     }
 
-    static async getClaimsForCSV() {
+    static async getClaimsForCSV () {
         try {
             const [rows] = await pool.query(`
                 SELECT 
