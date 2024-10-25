@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs';
 import { User } from '../models/user.js';
-import { validateUser } from '../schemas/userSchema.js';
 
 const getUsers = async (req, res) => {
     try {
@@ -19,17 +18,6 @@ const createUser = async (req, res) => {
         if (userExists) {
             return res.status(409).json({ message: 'Email is already taken' });
         }
-        const body = {
-            name:req.body.name, 
-            lastname:req.body.lastname, 
-            email:req.body.email, 
-            password:req.body.password
-        }
-    
-        const validation = validateUser(body)
-        if (validation){
-            return res.status(400).send(validation);
-        } 
 
         // Encriptar la contraseña antes de guardar
         const salt = await bcrypt.genSalt(10);

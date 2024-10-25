@@ -1,31 +1,57 @@
-import Joi from "joi"
+import Joi from 'joi';
 
-// Esquemas de validación
 const userSchema = Joi.object({
-    name: Joi.string().min(3).max(30).required(),
-    lastname: Joi.string().min(3).max(30).required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().min(6).required(),
-  });
+    name: Joi.string()
+        .min(3).message('El nombre debe tener al menos 3 caracteres.')
+        .max(30).message('El nombre no debe tener más de 30 caracteres.')
+        .required().messages({
+            'string.empty': 'El campo "name" es obligatorio.',
+            'any.required': 'El campo "name" es obligatorio.'
+        }),
+    lastname: Joi.string()
+        .min(3).message('El apellido debe tener al menos 3 caracteres.')
+        .max(30).message('El apellido no debe tener más de 30 caracteres.')
+        .required().messages({
+            'string.empty': 'El campo "lastname" es obligatorio.',
+            'any.required': 'El campo "lastname" es obligatorio.'
+        }),
+    email: Joi.string()
+        .email().message('El correo electrónico no es válido.')
+        .required().messages({
+            'string.empty': 'El campo "email" es obligatorio.',
+            'any.required': 'El campo "email" es obligatorio.'
+        }),
+    password: Joi.string()
+        .min(6).message('La contraseña debe tener al menos 6 caracteres.')
+        .required().messages({
+            'string.empty': 'El campo "password" es obligatorio.',
+            'any.required': 'El campo "password" es obligatorio.'
+        })
+});
 
-const officeSchema = Joi.object({
-    name: Joi.string().min(3).max(50).required(),
-    claimTypeId: Joi.number().integer().required(),
-})
+const updateUserSchema = Joi.object({
+    name: Joi.string().messages({
+        'string.base': 'El campo "name" debe ser un texto.'
+    }),
+    lastname: Joi.string().messages({
+        'string.base': 'El campo "lastname" debe ser un texto.'
+    }),
+    email: Joi.string().email().messages({
+        'string.email': 'El correo electrónico no es válido.'
+    }),
+    password: Joi.string().messages({
+        'string.base': 'El campo "password" debe ser un texto.'
+    }),
+    image: Joi.string().messages({
+        'string.base': 'El campo "image" debe ser una URL válida.'
+    }),
+    active: Joi.number().valid(0, 1).messages({
+        'number.base': 'El campo "active" debe ser un número.',
+        'any.only': 'El campo "active" debe ser 0 o 1.'
+    })
+}).or('name', 'lastname', 'email', 'password', 'image', 'active').unknown(false);
 
-
-  // Funciones para validar datos
-export  function validateUser  (data)  {
-  const { error } = userSchema.validate(data);
-  if (error) {
-    return error.details[0].message;
-  }
+export {
+    userSchema,
+    updateUserSchema
 };
-
-export function validateOffice  (data)  {
-  const { error } = officeSchema.validate(data);
-  if (error) {
-    return error.details[0].message;
-  }
-};
-

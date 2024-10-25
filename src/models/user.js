@@ -79,7 +79,7 @@ class User {
     }
 
     static async create (userData, file) {
-        const { name, lastname, email, password, active } = userData;
+        const { name, lastname, email, password } = userData;
         const USER_TYPE = 2; // Empleado
         try {
             let imagePath = null;
@@ -88,9 +88,9 @@ class User {
             }
             const [result] = await pool.query(
                 'INSERT INTO usuarios (nombre, apellido, correoElectronico, contrasenia, idTipoUsuario, imagen, activo) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [name, lastname, email, password, USER_TYPE, imagePath, active]
+                [name, lastname, email, password, USER_TYPE, imagePath, 1]
             );
-            return new User(result.insertId, name, lastname, email, password, USER_TYPE, imagePath, active);
+            return new User(result.insertId, name, lastname, email, password, USER_TYPE, imagePath, 1);
         } catch (err) {
             console.error('Error creating user:', err);
             throw err;

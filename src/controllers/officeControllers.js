@@ -1,6 +1,5 @@
 import { Office } from '../models/office.js';
 import { User } from '../models/user.js';
-import { validateOffice  } from '../schemas/userSchema.js';
 
 const getOffice = async (req, res) => {
     const office = await Office.getAllOffice();
@@ -8,15 +7,11 @@ const getOffice = async (req, res) => {
 };
 
 const createOffice = async (req, res) => {
-    const newOffice = await Office.createOffice(req.body);
-    res.status(201).json(newOffice);
-    const body = {
-        name:req.body.name,
-        claimTypeId:req.body.claimTypeId,
-    }
-    const validation = validateOffice(body)
-            if (validation){
-            return res.status(400).send(validation);
+    try {
+        const newOffice = await Office.createOffice(req.body);
+        res.status(201).json(newOffice);
+    } catch (err) {
+        res.status(500).json({ error: 'Error creating office' });
     }
 };
 

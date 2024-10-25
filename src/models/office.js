@@ -46,15 +46,15 @@ class Office {
     }
 
     static async createOffice (officeData) {
-        const { name, claimTypeId, active } = officeData;
+        const { name, claimTypeId } = officeData;
         try {
             const [result] = await pool.query(
                 'INSERT INTO oficinas (nombre, idReclamoTipo, activo) VALUES (?, ?, ?)',
-                [name, claimTypeId, active]
+                [name, claimTypeId, 1]
             );
-            return new Office(result.insertId, name, claimTypeId, active);
+            return new Office(result.insertId, name, claimTypeId, 1);
         } catch (err) {
-            console.error('Error creating office:', err);
+            console.error('Error creating Office:', err);
             throw err;
         }
     }
