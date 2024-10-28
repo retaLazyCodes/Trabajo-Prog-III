@@ -26,6 +26,10 @@ const userSchema = Joi.object({
         .required().messages({
             'string.empty': 'El campo "password" es obligatorio.',
             'any.required': 'El campo "password" es obligatorio.'
+        }),
+    image: Joi.binary()
+        .messages({
+            'binary.base': 'La imagen debe ser un archivo.'
         })
 });
 
@@ -39,11 +43,11 @@ const updateUserSchema = Joi.object({
     email: Joi.string().email().messages({
         'string.email': 'El correo electrónico no es válido.'
     }),
-    password: Joi.string().messages({
-        'string.base': 'El campo "password" debe ser un texto.'
-    }),
-    image: Joi.string().messages({
-        'string.base': 'El campo "image" debe ser una URL válida.'
+    password: Joi.string()
+        .min(6).message('La contraseña debe tener al menos 6 caracteres.')
+        .messages({ 'string.base': 'El campo "password" debe ser un texto.' }),
+    image: Joi.binary().messages({
+        'binary.base': 'La imagen debe ser un archivo.'
     }),
     active: Joi.number().valid(0, 1).messages({
         'number.base': 'El campo "active" debe ser un número.',

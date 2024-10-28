@@ -29,8 +29,8 @@ class Statistics {
                 reclamos_estado.descripcion AS estado,
                 DATE_FORMAT(reclamos.fechaCreado, '%d/%m/%Y %H:%i') AS fechaCreacion
             FROM reclamos
-            LEFT JOIN reclamos_tipo ON reclamos.idReclamoTipo = reclamos_tipo.idReclamosTipo
-            LEFT JOIN reclamos_estado ON reclamos.idReclamoEstado = reclamos_estado.idReclamosEstado
+            LEFT JOIN reclamos_tipo ON reclamos.idReclamoTipo = reclamos_tipo.idReclamoTipo
+            LEFT JOIN reclamos_estado ON reclamos.idReclamoEstado = reclamos_estado.idReclamoEstado
             LEFT JOIN usuarios ON reclamos.idUsuarioCreador = usuarios.idUsuario
             LEFT JOIN usuarios_oficinas ON usuarios.idUsuario = usuarios_oficinas.idUsuario
             LEFT JOIN oficinas ON usuarios_oficinas.idOficina = oficinas.idOficina

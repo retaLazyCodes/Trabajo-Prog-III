@@ -14,7 +14,7 @@ BEGIN
     -- Reclamos por tipo
     SELECT rt.descripcion AS tipo_reclamo, COUNT(r.idReclamo) AS total_reclamos
     FROM reclamos r
-    JOIN reclamos_tipo rt ON r.idReclamoTipo = rt.idReclamosTipo
+    JOIN reclamos_tipo rt ON r.idReclamoTipo = rt.idReclamoTipo
     GROUP BY rt.descripcion;
     
     -- Reclamos resueltos y no resueltos
@@ -25,6 +25,6 @@ BEGIN
         END AS estado,
         COUNT(r.idReclamo) AS total_reclamos
     FROM reclamos r
-    JOIN reclamos_estado re ON r.idReclamoEstado = re.idReclamosEstado
+    JOIN reclamos_estado re ON r.idReclamoEstado = re.idReclamoEstado
     GROUP BY estado;
 END

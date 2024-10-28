@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-09-2024 a las 23:45:59
+-- Tiempo de generación: 28-10-2024 a las 23:28:10
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.1.25
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,15 +18,41 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `db`
+-- Base de datos: `reclamos`
 --
 
 DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_statistics` ()   BEGIN
+    SELECT COUNT(*) AS total_reclamos FROM reclamos;
+    
+    SELECT o.nombre AS oficina, COUNT(r.idReclamo) AS total_reclamos
+    FROM reclamos r
+    JOIN usuarios u ON r.idUsuarioCreador = u.idUsuario
+    JOIN usuarios_oficinas uo ON u.idUsuario = uo.idUsuario
+    JOIN oficinas o ON uo.idOficina = o.idOficina
+    GROUP BY o.nombre;
+    
+    SELECT rt.descripcion AS tipo_reclamo, COUNT(r.idReclamo) AS total_reclamos
+    FROM reclamos r
+    JOIN reclamos_tipo rt ON r.idReclamoTipo = rt.idReclamoTipo
+    GROUP BY rt.descripcion;
+    
+    SELECT 
+        CASE 
+            WHEN re.descripcion = 'Finalizado' THEN 'Resuelto'
+            ELSE 'No resuelto'
+        END AS estado,
+        COUNT(r.idReclamo) AS total_reclamos
+    FROM reclamos r
+    JOIN reclamos_estado re ON r.idReclamoEstado = re.idReclamoEstado
+    GROUP BY estado;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `totales_reclamos_estados` (OUT `descripcion` CHAR, OUT `cantidad` INT)   SELECT re.descripcion, count(r.idReclamo) as cantidad FROM `reclamos` as r
-INNER JOIN `reclamos_estado` AS re ON re.idReclamosEstado = r.idReclamoEstado
+INNER JOIN `reclamos_estado` AS re ON re.idReclamoEstado = r.idReclamoEstado
 GROUP by re.descripcion$$
 
 DELIMITER ;
@@ -94,7 +120,7 @@ INSERT INTO `reclamos` (`idReclamo`, `asunto`, `descripcion`, `fechaCreado`, `fe
 --
 
 CREATE TABLE `reclamos_estado` (
-  `idReclamosEstado` int(11) NOT NULL,
+  `idReclamoEstado` int(11) NOT NULL,
   `descripcion` varchar(256) NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -103,7 +129,7 @@ CREATE TABLE `reclamos_estado` (
 -- Volcado de datos para la tabla `reclamos_estado`
 --
 
-INSERT INTO `reclamos_estado` (`idReclamosEstado`, `descripcion`, `activo`) VALUES
+INSERT INTO `reclamos_estado` (`idReclamoEstado`, `descripcion`, `activo`) VALUES
 (1, 'Creado', 1),
 (2, 'En Proceso', 1),
 (3, 'Cancelado', 1),
@@ -116,7 +142,7 @@ INSERT INTO `reclamos_estado` (`idReclamosEstado`, `descripcion`, `activo`) VALU
 --
 
 CREATE TABLE `reclamos_tipo` (
-  `idReclamosTipo` int(11) NOT NULL,
+  `idReclamoTipo` int(11) NOT NULL,
   `descripcion` varchar(256) NOT NULL,
   `activo` tinyint(4) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -125,7 +151,7 @@ CREATE TABLE `reclamos_tipo` (
 -- Volcado de datos para la tabla `reclamos_tipo`
 --
 
-INSERT INTO `reclamos_tipo` (`idReclamosTipo`, `descripcion`, `activo`) VALUES
+INSERT INTO `reclamos_tipo` (`idReclamoTipo`, `descripcion`, `activo`) VALUES
 (1, 'Falla de motor', 1),
 (2, 'Falla de frenos', 1),
 (3, 'Falla de suspensión', 1),
@@ -148,7 +174,7 @@ CREATE TABLE `usuarios` (
   `apellido` varchar(256) NOT NULL,
   `correoElectronico` varchar(256) NOT NULL,
   `contrasenia` varchar(256) NOT NULL,
-  `idTipoUsuario` int(11) NOT NULL,
+  `idUsuarioTipo` int(11) NOT NULL,
   `imagen` varchar(256) DEFAULT NULL,
   `activo` tinyint(4) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -157,7 +183,7 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`idUsuario`, `nombre`, `apellido`, `correoElectronico`, `contrasenia`, `idTipoUsuario`, `imagen`, `activo`) VALUES
+INSERT INTO `usuarios` (`idUsuario`, `nombre`, `apellido`, `correoElectronico`, `contrasenia`, `idUsuarioTipo`, `imagen`, `activo`) VALUES
 (1, 'Daenerys', 'Targaryen', 'daetar@correo.com', 'b2803ace294160fd87aa85f826fa8df0c39e77282e0217af680198cef8d9edc3', 1, NULL, 1),
 (2, 'Jon', 'Snow', 'jonsno@gmail.com', 'd98e05719dd7fa45547fbc3409eb36881bb8afe963268f7e8f6c2e24e80e58f5', 1, NULL, 1),
 (3, 'Tyrion', 'Lannister', 'tyrlan@correo.com', '9f9e51def43bc759ac35cd56ce8514a2c4dd0fbc9bfbb5bc97ce691f65bf5bb9', 2, NULL, 1),
@@ -240,15 +266,15 @@ ALTER TABLE `reclamos`
 -- Indices de la tabla `reclamos_estado`
 --
 ALTER TABLE `reclamos_estado`
-  ADD PRIMARY KEY (`idReclamosEstado`),
-  ADD UNIQUE KEY `idReclamosEstado` (`idReclamosEstado`);
+  ADD PRIMARY KEY (`idReclamoEstado`),
+  ADD UNIQUE KEY `idReclamosEstado` (`idReclamoEstado`);
 
 --
 -- Indices de la tabla `reclamos_tipo`
 --
 ALTER TABLE `reclamos_tipo`
-  ADD PRIMARY KEY (`idReclamosTipo`),
-  ADD UNIQUE KEY `idReclamosTipo` (`idReclamosTipo`);
+  ADD PRIMARY KEY (`idReclamoTipo`),
+  ADD UNIQUE KEY `idReclamosTipo` (`idReclamoTipo`);
 
 --
 -- Indices de la tabla `usuarios`
@@ -257,7 +283,7 @@ ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`idUsuario`),
   ADD UNIQUE KEY `idUsuario` (`idUsuario`),
   ADD UNIQUE KEY `correoElectronico` (`correoElectronico`),
-  ADD KEY `usuarios_fk5` (`idTipoUsuario`);
+  ADD KEY `usuarios_fk5` (`idUsuarioTipo`);
 
 --
 -- Indices de la tabla `usuarios_oficinas`
@@ -295,13 +321,13 @@ ALTER TABLE `reclamos`
 -- AUTO_INCREMENT de la tabla `reclamos_estado`
 --
 ALTER TABLE `reclamos_estado`
-  MODIFY `idReclamosEstado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idReclamoEstado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `reclamos_tipo`
 --
 ALTER TABLE `reclamos_tipo`
-  MODIFY `idReclamosTipo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `idReclamoTipo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
@@ -329,14 +355,14 @@ ALTER TABLE `usuarios_tipo`
 -- Filtros para la tabla `oficinas`
 --
 ALTER TABLE `oficinas`
-  ADD CONSTRAINT `oficinas_fk2` FOREIGN KEY (`idReclamoTipo`) REFERENCES `reclamos_tipo` (`idReclamosTipo`);
+  ADD CONSTRAINT `oficinas_fk2` FOREIGN KEY (`idReclamoTipo`) REFERENCES `reclamos_tipo` (`idReclamoTipo`);
 
 --
 -- Filtros para la tabla `reclamos`
 --
 ALTER TABLE `reclamos`
-  ADD CONSTRAINT `reclamos_fk6` FOREIGN KEY (`idReclamoEstado`) REFERENCES `reclamos_estado` (`idReclamosEstado`),
-  ADD CONSTRAINT `reclamos_fk7` FOREIGN KEY (`idReclamoTipo`) REFERENCES `reclamos_tipo` (`idReclamosTipo`),
+  ADD CONSTRAINT `reclamos_fk6` FOREIGN KEY (`idReclamoEstado`) REFERENCES `reclamos_estado` (`idReclamoEstado`),
+  ADD CONSTRAINT `reclamos_fk7` FOREIGN KEY (`idReclamoTipo`) REFERENCES `reclamos_tipo` (`idReclamoTipo`),
   ADD CONSTRAINT `reclamos_fk8` FOREIGN KEY (`idUsuarioCreador`) REFERENCES `usuarios` (`idUsuario`),
   ADD CONSTRAINT `reclamos_fk9` FOREIGN KEY (`idUsuarioFinalizador`) REFERENCES `usuarios` (`idUsuario`);
 
@@ -344,7 +370,7 @@ ALTER TABLE `reclamos`
 -- Filtros para la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD CONSTRAINT `usuarios_fk5` FOREIGN KEY (`idTipoUsuario`) REFERENCES `usuarios_tipo` (`idUsuarioTipo`);
+  ADD CONSTRAINT `usuarios_fk5` FOREIGN KEY (`idUsuarioTipo`) REFERENCES `usuarios_tipo` (`idUsuarioTipo`);
 
 --
 -- Filtros para la tabla `usuarios_oficinas`
