@@ -28,12 +28,12 @@ class User {
 
     static async getAll () {
         try {
-            const [rows] = await pool.query('SELECT * FROM usuarios WHERE idTipoUsuario = 2');
+            const [rows] = await pool.query('SELECT * FROM usuarios WHERE idUsuarioTipo = 2');
             if (rows.length) {
                 return rows.map((user) =>
                     new User(user.idUsuario, user.nombre,
                         user.apellido, user.correoElectronico,
-                        user.contrasenia, user.idTipoUsuario, user.imagen, user.activo
+                        user.contrasenia, user.idUsuarioTipo, user.imagen, user.activo
                     ).getPublicData()
                 );
             }
@@ -46,12 +46,12 @@ class User {
 
     static async findById (userId) {
         try {
-            const [rows] = await pool.query('SELECT * FROM usuarios WHERE idUsuario = ? AND idTipoUsuario = 2', [userId]);
+            const [rows] = await pool.query('SELECT * FROM usuarios WHERE idUsuario = ? AND idUsuarioTipo = 2', [userId]);
             if (rows.length) {
                 const user = rows[0];
                 return new User(user.idUsuario, user.nombre,
                     user.apellido, user.correoElectronico,
-                    user.contrasenia, user.idTipoUsuario, user.imagen, user.activo
+                    user.contrasenia, user.idUsuarioTipo, user.imagen, user.activo
                 );
             }
             return null;
@@ -63,12 +63,12 @@ class User {
 
     static async findByEmail (email) {
         try {
-            const [rows] = await pool.query('SELECT * FROM usuarios WHERE correoElectronico = ? AND idTipoUsuario = 2', [email]);
+            const [rows] = await pool.query('SELECT * FROM usuarios WHERE correoElectronico = ? AND idUsuarioTipo = 2', [email]);
             if (rows.length) {
                 const user = rows[0];
                 return new User(user.idUsuario, user.nombre,
                     user.apellido, user.correoElectronico,
-                    user.contrasenia, user.idTipoUsuario, user.imagen, user.activo
+                    user.contrasenia, user.idUsuarioTipo, user.imagen, user.activo
                 );
             }
             return null;
@@ -87,7 +87,7 @@ class User {
                 imagePath = `http://localhost:${config.server.PORT}/uploads/` + file.filename;
             }
             const [result] = await pool.query(
-                'INSERT INTO usuarios (nombre, apellido, correoElectronico, contrasenia, idTipoUsuario, imagen, activo) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                'INSERT INTO usuarios (nombre, apellido, correoElectronico, contrasenia, idUsuarioTipo, imagen, activo) VALUES (?, ?, ?, ?, ?, ?, ?)',
                 [name, lastname, email, password, USER_TYPE, imagePath, 1]
             );
             return new User(result.insertId, name, lastname, email, password, USER_TYPE, imagePath, 1);
