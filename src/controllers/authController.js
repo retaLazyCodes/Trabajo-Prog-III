@@ -1,13 +1,13 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { User } from '../models/user.js';
+import { UserService } from '../services/userService.js';
 
 const authMe = async (req, res, next) => {
     req.method = 'NONE';
     const { id: userId } = req.user;
 
     try {
-        const user = await User.findById(userId);
+        const user = await UserService.findById(userId);
         return res.status(200).json(user.getPublicData());
     } catch (error) {
         console.error(error.message);
@@ -25,7 +25,7 @@ const authLogin = async (req, res, next) => {
     }
 
     try {
-        const user = await User.findByEmail(email);
+        const user = await UserService.findByEmail(email);
 
         const passwordCorrect = user && await bcrypt.compare(password, user.password);
 

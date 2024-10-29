@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
-import { User } from '../models/user.js';
+import { UserService } from '../services/userService.js';
 
 const getUsers = async (req, res) => {
     try {
-        const users = await User.getAll();
+        const users = await UserService.getAll();
         res.status(200).json(users);
     } catch (err) {
         console.error('Error getting users:', err);
@@ -14,7 +14,7 @@ const getUsers = async (req, res) => {
 const createUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const userExists = await User.findByEmail(email);
+        const userExists = await UserService.findByEmail(email);
         if (userExists) {
             return res.status(409).json({ message: 'Email is already taken' });
         }
@@ -23,7 +23,7 @@ const createUser = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const newUser = await User.create({
+        const newUser = await UserService.create({
             ...req.body,
             password: hashedPassword
         }, req.file);
@@ -39,14 +39,14 @@ const updateUser = async (req, res) => {
     const updates = req.body;
 
     try {
-        const user = await User.findById(id);
+        const user = await UserService.findById(id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
         // Verificar si el email ya está en uso
         if (updates.email) {
-            const emailExists = await User.findByEmail(updates.email);
+            const emailExists = await UserService.findByEmail(updates.email);
             if (emailExists && emailExists.userId.toString() !== id.toString()) {
                 return res.status(409).json({ message: 'Email is already taken' });
             }
@@ -75,7 +75,7 @@ const updateUser = async (req, res) => {
             return res.status(400).json({ message: 'No fields to update' });
         }
 
-        await User.update(fieldsToUpdate, [...values, id], req.file);
+        await UserService.update(fieldsToUpdate, [...values, id], req.file);
         res.status(200).json({ message: 'User updated successfully' });
     } catch (err) {
         console.error('Error updating user:', err);
