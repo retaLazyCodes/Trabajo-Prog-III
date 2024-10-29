@@ -1,9 +1,9 @@
-import { Statistics } from '../models/statistics.js';
+import { ReportsService } from '../services/reportsService.js';
 import { createObjectCsvStringifier } from 'csv-writer';
 
 const getStatistics = async (req, res) => {
     try {
-        const statistics = await Statistics.getStatistics();
+        const statistics = await ReportsService.getStatistics();
         res.status(200).json(statistics);
     } catch (error) {
         res.status(500).json({ error: 'Error statistics not found' });
@@ -12,7 +12,7 @@ const getStatistics = async (req, res) => {
 
 const downloadClaimsCSV = async (req, res) => {
     try {
-        const claims = await Statistics.getClaimsForCSV();
+        const claims = await ReportsService.getClaimsForCSV();
 
         const csvStringifier = createObjectCsvStringifier({
             header: [

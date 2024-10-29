@@ -1,6 +1,6 @@
 import { pool } from '../config/db.js';
 
-class Statistics {
+class ReportsService {
     static async getStatistics () {
         try {
             const [rows] = await pool.query('CALL get_statistics()');
@@ -44,4 +44,4 @@ class Statistics {
     }
 }
 
-export { Statistics };
+export { ReportsService };
