@@ -55,7 +55,7 @@ const downloadClaims = async (req, res) => {
 
             const browser = await puppeteer.launch();
             const page = await browser.newPage();
-            await page.setContent(html);
+            await page.setContent(html, { waitUntil: 'load' });
 
             const pdfBuffer = await page.pdf({
                 format: 'A4',
@@ -63,15 +63,14 @@ const downloadClaims = async (req, res) => {
                 preferCSSPageSize: true
             });
 
-            // Esto debe borrarse cuando se descargue bien el PDF
-            fs.writeFileSync('./Claims - Report.pdf', pdfBuffer);
-
             await browser.close();
 
-            res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', 'attachment; filename="Claims - Report.pdf"');
-            res.setHeader('Content-Length', pdfBuffer.length);
-            res.send(pdfBuffer);
+            res.set({
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': 'inline; filename="Claims - Report.pdf"',
+                'Content-Length': pdfBuffer.length
+            });
+            res.status(200).end(pdfBuffer);
         } else {
             res.status(400).json({ error: `Invalid format: ${format}. Use 'csv' or 'pdf'.` });
         }
