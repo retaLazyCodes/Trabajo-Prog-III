@@ -1,7 +1,7 @@
 import { pool } from '../config/db.js';
 
 class ReportsService {
-    static async getStatistics() {
+    static async getStatistics () {
         try {
             const [rows] = await pool.query('CALL get_statistics()');
             const statistics = {
@@ -18,7 +18,7 @@ class ReportsService {
         }
     }
 
-    static async getClaims() {
+    static async getClaims () {
         try {
             const [rows] = await pool.query('CALL get_claims()');
             return rows;
