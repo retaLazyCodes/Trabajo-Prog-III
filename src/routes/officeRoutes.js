@@ -5,7 +5,7 @@ import {
     updateOffice,
     employeeAdd,
     employeeRemove
-} from '../controllers/officeControllers.js';
+} from '../controllers/officeController.js';
 import { validateOffice, validateUpdateOffice } from '../middlewares/validateOffice.js';
 
 const router = Router();
