@@ -1,0 +1,85 @@
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reporte de Reclamos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #161823;
+      align-content: center;
+    }
+
+    .container {
+      background-color: #232635;
+      max-width: 37.5rem;
+      margin: 0 auto;
+      padding: 1.25rem;
+      border-radius: 1rem;
+    }
+
+    h1 {
+      color: #38ef7d;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    p {
+      color: #ffffff;
+      font-size: 1rem;
+      line-height: 4;
+    }
+
+    .highlight {
+      color: #6aba6e;
+      font-weight: bold;
+    }
+
+    .status {
+      padding: 0.625rem 0.625rem 0.625rem 2rem;
+      border-radius: 0.5rem;
+      margin: 1.25rem 0;
+      background-color: #161823;
+      border-left: 0.313rem solid #38ef7d;
+    }
+
+    .footer {
+      margin-top: 1.25rem;
+      font-size: 0.875rem;
+      text-align: center;
+    }
+
+    .footer p strong {
+      color: #38ef7d;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Reporte de Reclamos</h1>
+    {{#each claims}}
+    <div class="status">
+      <p><strong>Total de reclamos: </strong> <span class="highlight">{{this.totalClaims}}</span></p>
+      <p><strong>Reclamos no finalizados: </strong>
+        <span class="highlight">{{this.claimsNotCompleted}}</span>
+      </p>
+      <p><strong>Reclamos finalizados: </strong>
+        <span class="highlight">{{this.claimsCompleted}}</span>
+      </p>
+      <p><strong>Tipo de reclamo más frecuente: </strong>
+        <span class="highlight">{{this.descriptionTypeFrequentClaim}}</span>
+      </p>
+    </div>
+    {{/each}}
+    <div class="footer">
+      <p>Si necesita más información, no dude en ponerse en contacto con nosotros.</p>
+      <p class="team"><strong>Equipo de Programación III</strong></p>
+    </div>
+  </div>
+</body>
+
+</html>

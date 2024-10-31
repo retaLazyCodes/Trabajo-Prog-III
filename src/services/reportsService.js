@@ -18,27 +18,12 @@ class ReportsService {
         }
     }
 
-    static async getClaimsForCSV () {
+    static async getClaims () {
         try {
-            const [rows] = await pool.query(`
-                SELECT 
-                reclamos.idReclamo AS id,
-                reclamos.descripcion AS descripcion,
-                reclamos_tipo.descripcion AS tipo,
-                oficinas.nombre AS oficina,
-                reclamos_estado.descripcion AS estado,
-                DATE_FORMAT(reclamos.fechaCreado, '%d/%m/%Y %H:%i') AS fechaCreacion
-            FROM reclamos
-            LEFT JOIN reclamos_tipo ON reclamos.idReclamoTipo = reclamos_tipo.idReclamoTipo
-            LEFT JOIN reclamos_estado ON reclamos.idReclamoEstado = reclamos_estado.idReclamoEstado
-            LEFT JOIN usuarios ON reclamos.idUsuarioCreador = usuarios.idUsuario
-            LEFT JOIN usuarios_oficinas ON usuarios.idUsuario = usuarios_oficinas.idUsuario
-            LEFT JOIN oficinas ON usuarios_oficinas.idOficina = oficinas.idOficina
-            `);
-            // En caso de querer traer solo los reclamos activos poner al final de la query: WHERE reclamos_estado.activo = 1
+            const [rows] = await pool.query('CALL get_claims()');
             return rows;
         } catch (err) {
-            console.error('Error obtaining claims for CSV:', err);
+            console.error('Error obtaining claims for report download:', err);
             throw err;
         }
     }

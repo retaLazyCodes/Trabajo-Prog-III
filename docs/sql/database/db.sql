@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-10-2024 a las 23:28:10
+-- Tiempo de generación: 31-10-2024 a las 17:32:18
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -25,6 +25,34 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_claims` ()   BEGIN    
+    DECLARE totalClaims INT;
+    DECLARE claimsNotCompleted INT;
+    DECLARE claimsCompleted INT;
+    DECLARE descriptionTypeFrequentClaim VARCHAR(255);
+    DECLARE amountTypeFrequentClaim INT;
+
+    
+    SELECT COUNT(*) INTO totalClaims FROM reclamos;
+    SELECT COUNT(*) INTO claimsNotCompleted FROM reclamos WHERE reclamos.idReclamoEstado <> 4;
+    SELECT COUNT(*) INTO claimsCompleted FROM reclamos WHERE reclamos.idReclamoEstado = 4;
+
+    SELECT rt.descripcion, COUNT(*) INTO descriptionTypeFrequentClaim, amountTypeFrequentClaim
+    FROM reclamos AS r
+    INNER JOIN reclamos_tipo AS rt ON rt.idReclamoTipo = r.idReclamoTipo
+    GROUP BY r.idReclamoTipo
+    ORDER BY amountTypeFrequentClaim DESC 
+    LIMIT 1;
+
+    
+    SELECT 
+        totalClaims,
+        claimsNotCompleted,
+        claimsCompleted,
+        descriptionTypeFrequentClaim,
+        amountTypeFrequentClaim;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_statistics` ()   BEGIN
     SELECT COUNT(*) AS total_reclamos FROM reclamos;
     
