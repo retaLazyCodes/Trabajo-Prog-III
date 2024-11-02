@@ -16,7 +16,7 @@ router.get(
 );
 
 router.put(
-    '/:id/attend',
+    '/:claimId/attend',
     attendClaim // Cambia el estado del reclamo
 );
 
@@ -31,8 +31,8 @@ router.get(
     getClientClaims // Consulta el estado y los detalles de los reclamos del cliente
 );
 
-router.delete(
-    '/:id/cancel',
+router.put(
+    '/:claimId/cancel',
     cancelClaim // Cancela un reclamo iniciado por el cliente
 );
 
