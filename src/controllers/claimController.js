@@ -1,14 +1,14 @@
 import { ClaimService } from '../services/claimService.js';
 
 const getClaimsByOffice = async (req, res) => {
-    try {//cambiar de donde saco el userId
-        //const userId = req.user.id;
+    try { // cambiar de donde saco el userId
+        // const userId = req.user.id;
         const { userId } = req.body;
         const officeId = await ClaimService.getUserOffice(userId);
         if (!officeId) {
             return res.status(400).json({ message: 'El empleado no pertenece a ninguna oficina activa' });
         }
-        console.log(officeId)
+        console.log(officeId);
         const claims = await ClaimService.getClaimsByOffice(officeId);
         res.status(200).json(claims);
     } catch (error) {
@@ -19,15 +19,12 @@ const getClaimsByOffice = async (req, res) => {
 const attendClaim = async (req, res) => {
     try {
         const { claimId } = req.params;
-        console.log(claimId)
-        //const userId = req.user.id;
         const { userId } = req.body;
 
         const officeId = await ClaimService.getUserOffice(userId);
         if (!officeId) {
             return res.status(400).json({ message: 'El empleado no pertenece a ninguna oficina activa' });
         }
-        console.log(officeId)
 
         const claimStatus = await ClaimService.getClaimStatus(claimId);
         if (!claimStatus) {
@@ -50,7 +47,7 @@ const attendClaim = async (req, res) => {
 };
 
 const createClaim = async (req, res) => {
-    try {//cambiar de donde saco el clientId
+    try { // cambiar de donde saco el clientId
         // const claimData = { ...req.body, clientId: req.user.id };
         const claimData = { ...req.body };
         const newClaim = await ClaimService.createClaim(claimData);
@@ -62,7 +59,7 @@ const createClaim = async (req, res) => {
 
 const getClientClaims = async (req, res) => {
     try {
-        //const clientId = req.user.id;
+        // const clientId = req.user.id;
         const { clientId } = req.body;
         const claims = await ClaimService.getClientClaims(clientId);
         res.status(200).json(claims);
