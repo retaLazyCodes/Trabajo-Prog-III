@@ -46,7 +46,7 @@ class ClaimTypeService {
             const query = `UPDATE reclamos_tipo SET ${mappedFields.join(', ')} WHERE idReclamoTipo = ?`;
             console.log(query, "___________________________________________________________________________");
             console.log(idReclamoTipo, "___________________________________________________________________________");
-            //arma mal la queri por el mapped fields! 
+            //arma mal la queri por el mapped fields!   endpoint http://localhost:8080/api/claim-types/6
             return await pool.query(query, idReclamoTipo);
         } catch (err) {
             console.error('Error updating Claim Type:', err);
