@@ -16,10 +16,21 @@ class User {
             name: this.name,
             lastname: this.lastname,
             email: this.email,
-            userType: this.userType,
+            userRole: getRoleNames(this.userType),
             image: this.image
         };
     }
 }
+
+const getRoleNames = (userType) => {
+    switch (userType) {
+    case 1:
+        return 'admin';
+    case 2:
+        return 'employee';
+    case 3:
+        return 'client';
+    }
+};
 
 export { User };

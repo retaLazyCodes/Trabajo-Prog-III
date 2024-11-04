@@ -24,7 +24,7 @@ class UserService {
 
     static async findById (userId) {
         try {
-            const [rows] = await pool.query('SELECT * FROM usuarios WHERE idUsuario = ? AND idUsuarioTipo = 2', [userId]);
+            const [rows] = await pool.query('SELECT * FROM usuarios WHERE idUsuario = ? AND activo = 1', [userId]);
             if (rows.length) {
                 const user = rows[0];
                 return new User(user.idUsuario, user.nombre,
@@ -41,7 +41,7 @@ class UserService {
 
     static async findByEmail (email) {
         try {
-            const [rows] = await pool.query('SELECT * FROM usuarios WHERE correoElectronico = ? AND idUsuarioTipo = 2', [email]);
+            const [rows] = await pool.query('SELECT * FROM usuarios WHERE correoElectronico = ?', [email]);
             if (rows.length) {
                 const user = rows[0];
                 return new User(user.idUsuario, user.nombre,
