@@ -412,11 +412,23 @@
 		},
 		{
 			"name": "Export file",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:8080/api/reports/download",
+					"raw": "http://localhost:8080/api/reports/download/pdf",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -425,7 +437,8 @@
 					"path": [
 						"api",
 						"reports",
-						"download"
+						"download",
+						"pdf"
 					]
 				}
 			},
