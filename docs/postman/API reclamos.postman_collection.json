@@ -454,7 +454,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userId\": 8\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -491,7 +491,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userId\": 8\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -518,11 +518,21 @@
 		{
 			"name": "Create claim",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJUeXBlIjoiY2xpZW50IiwiaWF0IjoxNzMwNjkxMzE5LCJleHAiOjE3MzA3Nzc3MTl9.2qYDjK61KA6G_EpxUxaPehvnvdZIKi_IK6qCdU_XS98",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"asunto\": \"asunto test 2\",\r\n    \"descripcion\":\"test 2\",\r\n    \"idReclamoTipo\": 14,\r\n    \"clientId\": 14\r\n}",
+					"raw": "{\r\n    \"subject\": \"asunto test 2\",\r\n    \"description\":\"test 2\",\r\n    \"claimTypeId\": 14\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -555,7 +565,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"clientId\": 7\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -585,7 +595,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"clientId\": 7\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
