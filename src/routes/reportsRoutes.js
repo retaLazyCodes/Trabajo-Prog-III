@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { getStatistics, downloadClaimsCSV } from '../controllers/reportsController.js';
+import { getStatistics, downloadClaims } from '../controllers/reportsController.js';
 
 const router = Router();
 
 router.get('/statistics', getStatistics);
-router.get('/download', downloadClaimsCSV);
+router.get('/download/:format', downloadClaims);
 
 export default router;
