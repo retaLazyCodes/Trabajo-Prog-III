@@ -93,13 +93,13 @@ class ClaimService {
     }
 
     static async createClaim (claimData) {
-        const { asunto, descripcion, idReclamoTipo, clientId } = claimData;
+        const { subject, description, claimTypeId, clientId } = claimData;
         const [result] = await pool.query(
             `INSERT INTO reclamos (asunto, descripcion, fechaCreado, idReclamoEstado, idReclamoTipo, idUsuarioCreador)
              VALUES (?, ?, NOW(), ?, ?, ?)`,
-            [asunto, descripcion, 1, idReclamoTipo, clientId] // 1 = estado "Creado"
+            [subject, description, 1, claimTypeId, clientId] // 1 = estado "Creado"
         );
-        return { idReclamo: result.insertId, ...claimData };
+        return { claimId: result.insertId, ...claimData };
     }
 
     static async isClaimOwnedByClient (claimId, clientId) {

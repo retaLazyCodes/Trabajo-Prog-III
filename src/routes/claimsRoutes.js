@@ -8,6 +8,7 @@ import {
     getClientClaims,
     cancelClaim
 } from '../controllers/claimController.js';
+import { validateClaim } from '../middlewares/validateClaim.js';
 
 const router = Router();
 
@@ -31,6 +32,7 @@ router.post(
     '/',
     authMiddleware,
     authorizeRoles('client'),
+    validateClaim,
     createClaim // Crea un nuevo reclamo
 );
 

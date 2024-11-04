@@ -1,4 +1,4 @@
-import { claimSchema, claimTypeSchema  } from "../schemas/index.js";
+import { claimSchema, claimTypeSchema } from '../schemas/index.js';
 
 export const validateClaim = (req, res, next) => {
     const { error } = claimSchema.validate(req.body, { abortEarly: false });
