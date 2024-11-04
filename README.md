@@ -120,7 +120,8 @@ Este proyecto usa las siguientes librerías:
 - [Multer](https://www.npmjs.com/package/multer): Implementación de Multer para el manejo de archivos.
 - [Nodemailer](https://www.npmjs.com/package/nodemailer): Implementación de Nodemailer para generar HTML dinámico.
 - [Nodemailer-express-handlebars](https://www.npmjs.com/package/nodemailer-express-handlebars): Implementación de Nodemailer para generar HTML dinámico.
-- [csv-writer](https://www.npmjs.com/package/csv-writer): Implementación de Csv-writer para generar archivos CSV.
+- [Csv-writer](https://www.npmjs.com/package/csv-writer): Implementación de Csv-writer para generar archivos CSV.
+- [Puppeteer](https://www.npmjs.com/package/puppeteer): Implementación de Puppeteer para controlar Chrome o Firefox a través del protocolo DevTools o WebDriver BiDi.
 
 ### Librerías de desarrollo
 
