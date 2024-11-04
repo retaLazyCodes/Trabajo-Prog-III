@@ -2,6 +2,12 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { UserService } from '../services/userService.js';
 
+const ROLE_NAMES = {
+    1: 'admin',
+    2: 'employee',
+    3: 'client'
+};
+
 const authMe = async (req, res, next) => {
     req.method = 'NONE';
     const { id: userId } = req.user;
@@ -37,13 +43,13 @@ const authLogin = async (req, res, next) => {
 
         const userForToken = {
             id: user.userId,
-            userType: user.userType
+            userType: ROLE_NAMES[user.userType]
         };
 
         const token = jwt.sign(userForToken, process.env.JWT_SECRET, { expiresIn: '24h' });
 
         return res.status(200).json({
-            userType: user.userType,
+            userRole: ROLE_NAMES[user.userType],
             token: `Bearer ${token}`
         });
     } catch (error) {

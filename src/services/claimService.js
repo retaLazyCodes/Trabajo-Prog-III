@@ -1,7 +1,7 @@
 import { pool } from '../config/db.js';
 
 class ClaimService {
-    static async getUserOffice(userId) {
+    static async getUserOffice (userId) {
         const [userOfficeRows] = await pool.query(
             `SELECT uo.idOficina
              FROM usuarios_oficinas uo
@@ -16,7 +16,7 @@ class ClaimService {
         return userOfficeRows[0].idOficina;
     }
 
-    static async isClaimInUserOffice(claimId, officeId) {
+    static async isClaimInUserOffice (claimId, officeId) {
         const [claimOfficeRows] = await pool.query(
             `SELECT uo.idOficina
              FROM reclamos r
@@ -32,9 +32,9 @@ class ClaimService {
         return true;
     }
 
-    static async getClaimStatus(claimId) {
+    static async getClaimStatus (claimId) {
         const [claimRows] = await pool.query(
-            `SELECT idReclamoEstado
+            `SELECT idReclamoEstado, idUsuarioCreador
              FROM reclamos
              WHERE idReclamo = ?`,
             [claimId]
@@ -44,10 +44,13 @@ class ClaimService {
             return null;
         }
 
-        return claimRows[0].idReclamoEstado;
+        return {
+            claimStatus: claimRows[0].idReclamoEstado,
+            clientId: claimRows[0].idUsuarioCreador
+        };
     }
 
-    static async getClaimsByOffice(officeId) {
+    static async getClaimsByOffice (officeId) {
         const [rows] = await pool.query(
             `SELECT r.idReclamo, r.asunto, r.descripcion, r.fechaCreado, re.descripcion AS estado
              FROM reclamos r
@@ -59,7 +62,7 @@ class ClaimService {
         return rows;
     }
 
-    static async attendClaim(claimId, userId, currentStatus) {
+    static async attendClaim (claimId, userId, currentStatus) {
         let newStatus;
 
         if (currentStatus === 1) { // "Creado"
@@ -89,7 +92,7 @@ class ClaimService {
         return result.affectedRows > 0;
     }
 
-    static async createClaim(claimData) {
+    static async createClaim (claimData) {
         const { asunto, descripcion, idReclamoTipo, clientId } = claimData;
         const [result] = await pool.query(
             `INSERT INTO reclamos (asunto, descripcion, fechaCreado, idReclamoEstado, idReclamoTipo, idUsuarioCreador)
@@ -99,7 +102,7 @@ class ClaimService {
         return { idReclamo: result.insertId, ...claimData };
     }
 
-    static async isClaimOwnedByClient(claimId, clientId) {
+    static async isClaimOwnedByClient (claimId, clientId) {
         const [rows] = await pool.query(
             `SELECT idReclamo 
              FROM reclamos 
@@ -110,17 +113,18 @@ class ClaimService {
         return rows.length > 0;
     }
 
-    static async getClientClaims(clientId) {
+    static async getClientClaims (clientId) {
         const [rows] = await pool.query(
-            `SELECT idReclamo, asunto, descripcion, fechaCreado
-             FROM reclamos
-             WHERE idUsuarioCreador = ?`,
+            `SELECT r.idReclamo, r.asunto, r.descripcion, r.fechaCreado, re.descripcion AS estado
+             FROM reclamos r
+             JOIN reclamos_estado re ON r.idReclamoEstado = re.idReclamoEstado
+             WHERE r.idUsuarioCreador = ?`,
             [clientId]
         );
         return rows;
     }
 
-    static async cancelClaim(claimId, clientId) {
+    static async cancelClaim (claimId, clientId) {
         const [result] = await pool.query(
             `UPDATE reclamos
              SET idUsuarioFinalizador = ?, fechaCancelado = NOW(), idReclamoEstado = ?
@@ -128,6 +132,16 @@ class ClaimService {
             [clientId, 3, claimId, 1] // 3 = estado "Cancelado", 1 = estado "Creado"
         );
         return result.affectedRows > 0;
+    }
+
+    static getNewStatusClaimString (claimStatus) {
+        switch (claimStatus) {
+        case 1:
+            return 'En Proceso';
+
+        case 2:
+            return 'Finalizado';
+        }
     }
 }
 

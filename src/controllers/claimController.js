@@ -1,14 +1,14 @@
 import { ClaimService } from '../services/claimService.js';
+import { UserService } from '../services/userService.js';
+import { sendEmailFromService } from '../services/emailService.js';
 
 const getClaimsByOffice = async (req, res) => {
-    try { // cambiar de donde saco el userId
-        // const userId = req.user.id;
-        const { userId } = req.body;
+    try {
+        const userId = req.user.id;
         const officeId = await ClaimService.getUserOffice(userId);
         if (!officeId) {
             return res.status(400).json({ message: 'El empleado no pertenece a ninguna oficina activa' });
         }
-        console.log(officeId);
         const claims = await ClaimService.getClaimsByOffice(officeId);
         res.status(200).json(claims);
     } catch (error) {
@@ -18,15 +18,15 @@ const getClaimsByOffice = async (req, res) => {
 
 const attendClaim = async (req, res) => {
     try {
+        const userId = req.user.id;
         const { claimId } = req.params;
-        const { userId } = req.body;
 
         const officeId = await ClaimService.getUserOffice(userId);
         if (!officeId) {
             return res.status(400).json({ message: 'El empleado no pertenece a ninguna oficina activa' });
         }
 
-        const claimStatus = await ClaimService.getClaimStatus(claimId);
+        const { claimStatus, clientId } = await ClaimService.getClaimStatus(claimId);
         if (!claimStatus) {
             return res.status(400).json({ message: 'El reclamo no existe' });
         }
@@ -40,6 +40,18 @@ const attendClaim = async (req, res) => {
         if (!success) {
             return res.status(404).json({ message: 'No se pudo atender el reclamo' });
         }
+
+        const client = await UserService.findById(clientId);
+
+        await sendEmailFromService({
+            to: client.email,
+            subject: 'Actualización del Estado de tu Reclamo',
+            userName: `${client.name} ${client.lastname}`,
+            idClaim: claimId,
+            statusClaim: ClaimService.getNewStatusClaimString(claimStatus),
+            dateUpdate: new Date().toLocaleDateString()
+        });
+
         res.status(200).json({ message: 'Reclamo atendido con éxito' });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -47,9 +59,8 @@ const attendClaim = async (req, res) => {
 };
 
 const createClaim = async (req, res) => {
-    try { // cambiar de donde saco el clientId
-        // const claimData = { ...req.body, clientId: req.user.id };
-        const claimData = { ...req.body };
+    try {
+        const claimData = { ...req.body, clientId: req.user.id };
         const newClaim = await ClaimService.createClaim(claimData);
         res.status(201).json(newClaim);
     } catch (error) {
@@ -59,8 +70,7 @@ const createClaim = async (req, res) => {
 
 const getClientClaims = async (req, res) => {
     try {
-        // const clientId = req.user.id;
-        const { clientId } = req.body;
+        const clientId = req.user.id;
         const claims = await ClaimService.getClientClaims(clientId);
         res.status(200).json(claims);
     } catch (error) {
@@ -70,8 +80,8 @@ const getClientClaims = async (req, res) => {
 
 const cancelClaim = async (req, res) => {
     try {
+        const clientId = req.user.id;
         const { claimId } = req.params;
-        const { clientId } = req.body;
 
         const isClaimOwnedByClient = await ClaimService.isClaimOwnedByClient(claimId, clientId);
         if (!isClaimOwnedByClient) {
@@ -82,6 +92,17 @@ const cancelClaim = async (req, res) => {
         if (!claim) {
             return res.status(500).json({ message: 'No se pudo cancelar el reclamo' });
         }
+
+        const client = await UserService.findById(clientId);
+
+        await sendEmailFromService({
+            to: client.email,
+            subject: 'Actualización del Estado de tu Reclamo',
+            userName: `${client.name} ${client.lastname}`,
+            idClaim: claimId,
+            statusClaim: 'Cancelado',
+            dateUpdate: new Date().toLocaleDateString()
+        });
         res.status(200).json({ message: 'Reclamo cancelado con éxito' });
     } catch (error) {
         res.status(500).json({ message: 'Error al cancelar el reclamo' });
