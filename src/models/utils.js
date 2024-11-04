@@ -30,3 +30,17 @@ export function mapOffices (fields) {
         return `${mappedKey} ${operator}`;
     });
 }
+
+export function mapClaimType (fields) {
+    const fieldMapping = {
+        description: 'description',
+        active: 'activo'
+    };
+
+    return fields.map(field => {
+        const [key, ...rest] = field.split(' ');
+        const operator = rest.join(' ');
+        const mappedKey = fieldMapping[key] || key;
+        return `${mappedKey} ${operator}`;
+    });
+}

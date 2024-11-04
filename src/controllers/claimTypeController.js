@@ -26,7 +26,7 @@ const updateClaimType = async (req, res) => {
         const values = [];
         for (const [key, value] of Object.entries(updates)) {
             if (value !== undefined) {
-                fieldsToUpdate.push(key);
+                fieldsToUpdate.push(`${key} = ?`);
                 values.push(value);
             }
         }

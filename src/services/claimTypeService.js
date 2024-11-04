@@ -1,4 +1,5 @@
 import { pool } from '../config/db.js';
+import { mapClaimType } from '../models/utils.js';
 
 class ClaimTypeService {
     static async getAllClaimTypes () {
@@ -37,23 +38,18 @@ class ClaimTypeService {
             throw err;
         }
     }
-    // ___________________________________________________________________________________
 
-    static async updateClaimType (fieldsToUpdate, idReclamoTipo) {
+    static async updateClaimType (fieldsToUpdate, values) {
         try {
             // Mapear cada campo a la sintaxis 'campo = ?' para el query
-            const mappedFields = Object.keys(fieldsToUpdate).map(field => `${field} = ?`);
+            const mappedFields = mapClaimType(fieldsToUpdate);
             const query = `UPDATE reclamos_tipo SET ${mappedFields.join(', ')} WHERE idReclamoTipo = ?`;
-            console.log(query, "___________________________________________________________________________");
-            console.log(idReclamoTipo, "___________________________________________________________________________");
-            //arma mal la queri por el mapped fields!   endpoint http://localhost:8080/api/claim-types/6
-            return await pool.query(query, idReclamoTipo);
+            return await pool.query(query, values);
         } catch (err) {
             console.error('Error updating Claim Type:', err);
             throw err;
         }
     }
-    // ____________________________________________________________________________________
 
     static async removeClaimType (claimTypeId) {
         try {
