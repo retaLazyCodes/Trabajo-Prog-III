@@ -33,7 +33,7 @@ export function mapOffices (fields) {
 
 export function mapClaimType (fields) {
     const fieldMapping = {
-        description: 'description',
+        description: 'descripcion',
         active: 'activo'
     };
 

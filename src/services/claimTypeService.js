@@ -26,13 +26,13 @@ class ClaimTypeService {
     }
 
     static async createClaimType (claimTypeData) {
-        const { descripcion } = claimTypeData;
+        const { description } = claimTypeData;
         try {
             const [result] = await pool.query(
                 'INSERT INTO reclamos_tipo (descripcion, activo) VALUES (?, ?)',
-                [descripcion, 1]
+                [description, 1]
             );
-            return { id: result.insertId, descripcion, activo: 1 };
+            return { id: result.insertId, description, activo: 1 };
         } catch (err) {
             console.error('Error creating claim type:', err);
             throw err;
@@ -47,15 +47,6 @@ class ClaimTypeService {
             return await pool.query(query, values);
         } catch (err) {
             console.error('Error updating Claim Type:', err);
-            throw err;
-        }
-    }
-
-    static async removeClaimType (claimTypeId) {
-        try {
-            await pool.query('DELETE FROM reclamos_tipo WHERE idReclamoTipo = ?', [claimTypeId]);
-        } catch (err) {
-            console.error('Error removing Claim Type:', err);
             throw err;
         }
     }
