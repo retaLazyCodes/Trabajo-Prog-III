@@ -5,16 +5,28 @@ import { Office } from '../models/office.js';
 class OfficeService {
     static async getAllOffices () {
         try {
-            const [rows] = await pool.query('SELECT * FROM oficinas WHERE activo = 1');
-            if (rows.length) {
-                return rows.map((office) =>
-                    new Office(office.idOficina,
-                        office.nombre,
-                        office.idReclamoTipo,
-                        office.activo)
-                );
-            }
-            return [];
+            const [rows] = await pool.query('SELECT oficinas.idOficina, oficinas.nombre AS nombreOficina, oficinas.idReclamoTipo,  usuarios.idUsuario, usuarios.nombre AS nombreUsuario, usuarios.apellido AS apellidoUsuario FROM oficinas     LEFT JOIN usuarios_oficinas ON oficinas.idOficina = usuarios_oficinas.idOficina AND usuarios_oficinas.activo = 1  LEFT JOIN usuarios ON usuarios_oficinas.idUsuario = usuarios.idUsuario     WHERE oficinas.activo = 1;');
+            const offices = {};
+            rows.forEach(row => {
+                const { idOficina, nombreOficina, idReclamoTipo, idUsuario, nombreUsuario, apellidoUsuario } = row;
+
+                if (!offices[idOficina]) {
+                    offices[idOficina] = {
+                        officeId: idOficina,
+                        officeName: nombreOficina,
+                        claimTypeId: idReclamoTipo,
+                        employees: []
+                    };
+                }
+                if (idUsuario) {
+                    offices[idOficina].employees.push({
+                        userId: idUsuario,
+                        firstName: nombreUsuario,
+                        lastName: apellidoUsuario
+                    });
+                }
+            });
+            return Object.values(offices);
         } catch (err) {
             console.error('Error finding office by ID:', err);
             throw err;
