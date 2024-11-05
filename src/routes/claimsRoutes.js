@@ -17,14 +17,14 @@ router.get(
     '/assigned',
     authMiddleware,
     authorizeRoles('employee'),
-    getClaimsByOffice // Lista reclamos asignados a la oficina del empleado
+    getClaimsByOffice
 );
 
 router.put(
     '/:claimId/attend',
     authMiddleware,
     authorizeRoles('employee'),
-    attendClaim // Cambia el estado del reclamo
+    attendClaim
 );
 
 // Rutas para clientes
@@ -33,21 +33,21 @@ router.post(
     authMiddleware,
     authorizeRoles('client'),
     validateClaim,
-    createClaim // Crea un nuevo reclamo
+    createClaim
 );
 
 router.get(
     '/my-claims',
     authMiddleware,
     authorizeRoles('client'),
-    getClientClaims // Consulta el estado y los detalles de los reclamos del cliente
+    getClientClaims
 );
 
 router.put(
     '/:claimId/cancel',
     authMiddleware,
     authorizeRoles('client'),
-    cancelClaim // Cancela un reclamo iniciado por el cliente
+    cancelClaim
 );
 
 export default router;
