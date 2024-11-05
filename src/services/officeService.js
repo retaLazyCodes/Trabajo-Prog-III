@@ -12,16 +12,16 @@ class OfficeService {
 
                 if (!offices[idOficina]) {
                     offices[idOficina] = {
-                        idOficina,
-                        nombreOficina,
-                        idReclamoTipo,
-                        empleados: []
+                        officeId: idOficina,
+                        officeName: nombreOficina,
+                        claimTypeId: idReclamoTipo,
+                        employees: []
                     };
                 }
-                offices[idOficina].empleados.push({
-                    idUsuario,
-                    nombreUsuario,
-                    apellidoUsuario
+                offices[idOficina].employees.push({
+                    userId: idUsuario,
+                    firstName: nombreUsuario,
+                    lastName: apellidoUsuario
                 });
             });
             return Object.values(offices);
