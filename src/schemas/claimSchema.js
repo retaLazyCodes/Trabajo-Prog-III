@@ -32,7 +32,7 @@ const claimTypeSchema = Joi.object({
         })
 });
 
-const updateclaimTypeSchema = Joi.object({
+const updateClaimTypeSchema = Joi.object({
     description: Joi.string().messages({
         'string.base': 'El campo "description" debe ser un texto.'
     }),
@@ -45,5 +45,5 @@ const updateclaimTypeSchema = Joi.object({
 export {
     claimSchema,
     claimTypeSchema,
-    updateclaimTypeSchema
+    updateClaimTypeSchema
 };
