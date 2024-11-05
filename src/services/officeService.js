@@ -18,11 +18,13 @@ class OfficeService {
                         employees: []
                     };
                 }
-                offices[idOficina].employees.push({
-                    userId: idUsuario,
-                    firstName: nombreUsuario,
-                    lastName: apellidoUsuario
-                });
+                if (idUsuario) {
+                    offices[idOficina].employees.push({
+                        userId: idUsuario,
+                        firstName: nombreUsuario,
+                        lastName: apellidoUsuario
+                    });
+                }
             });
             return Object.values(offices);
         } catch (err) {
