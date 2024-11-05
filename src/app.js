@@ -4,7 +4,10 @@ import {
     userRouter,
     emailRouter,
     officeRouter,
-    authRouter
+    authRouter,
+    reportsRouter,
+    claimsRouter,
+    claimTypeRouter
 } from './routes/index.js';
 import { notFound } from './middlewares/notFound.js';
 import path from 'path';
@@ -26,6 +29,9 @@ app.use(config.server.routes.users, userRouter);
 app.use(config.server.routes.offices, officeRouter);
 app.use(config.server.routes.email, emailRouter);
 app.use(config.server.routes.auth, authRouter);
+app.use(config.server.routes.reports, reportsRouter);
+app.use(config.server.routes.claims, claimsRouter);
+app.use(config.server.routes.claimsType, claimTypeRouter);
 
 // custom middlewares
 app.use(notFound);

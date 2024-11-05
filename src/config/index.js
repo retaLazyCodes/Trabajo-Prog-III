@@ -15,9 +15,11 @@ const config = {
         routes: {
             users: '/api/users',
             claims: '/api/claims',
+            claimsType: '/api/claim-types',
             auth: '/api/auth',
             email: '/api/email',
-            offices: '/api/offices'
+            offices: '/api/offices',
+            reports: '/api/reports'
         }
     }
 };

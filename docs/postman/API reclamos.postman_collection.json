@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Send email",
+			"name": "Send email (testing)",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {}
 			},
@@ -47,7 +47,80 @@
 			"response": []
 		},
 		{
-			"name": "Create User",
+			"name": "Auth Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"brianretamar0101@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth me",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInVzZXJUeXBlIjoyLCJpYXQiOjE3Mjg1MTcxOTAsImV4cCI6MTcyODYwMzU5MH0.igK-m5pwi1SL0gLnwbBMkA55mq68tesN9ZMwE-ih798",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"jramirez@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/me",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User (admin)",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -71,18 +144,14 @@
 						},
 						{
 							"key": "password",
-							"value": "12345",
+							"value": "123456",
 							"type": "text"
 						},
 						{
 							"key": "image",
 							"type": "file",
-							"src": []
-						},
-						{
-							"key": "active",
-							"value": "0",
-							"type": "text"
+							"src": [],
+							"disabled": true
 						}
 					]
 				},
@@ -103,21 +172,26 @@
 			"response": []
 		},
 		{
-			"name": "Get Users",
+			"name": "Get Users (admin)",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA3NzczMzYsImV4cCI6MTczMDg2MzczNn0.XqnbFflTAtqoh5SLNxavlWlZjjr2xpBOYykOgIfi644",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"mode": "formdata",
+					"formdata": []
 				},
 				"url": {
 					"raw": "http://localhost:8080/api/users/",
@@ -136,18 +210,35 @@
 			"response": []
 		},
 		{
-			"name": "Update User",
+			"name": "Update User (admin)",
 			"request": {
 				"method": "PATCH",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"jramirez@gmail.com\",\r\n    \"password\": \"123\"\r\n    \r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "jramirez@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": [],
+							"disabled": true
+						},
+						{
+							"key": "active",
+							"value": "1",
+							"type": "text"
 						}
-					}
+					]
 				},
 				"url": {
 					"raw": "http://localhost:8080/api/users/15",
@@ -166,33 +257,26 @@
 			"response": []
 		},
 		{
-			"name": "Get Offices",
+			"name": "Get Offices (admin)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA3NzczMzYsImV4cCI6MTczMDg2MzczNn0.XqnbFflTAtqoh5SLNxavlWlZjjr2xpBOYykOgIfi644",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/offices",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"offices"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Office",
-			"request": {
-				"method": "POST",
-				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"name\": \"nombre oficina\",\r\n        \"claimTypeId\": 1,\r\n        \"active\": 1\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -215,13 +299,23 @@
 			"response": []
 		},
 		{
-			"name": "Update Office",
+			"name": "Create Office (admin)",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA3NzczMzYsImV4cCI6MTczMDg2MzczNn0.XqnbFflTAtqoh5SLNxavlWlZjjr2xpBOYykOgIfi644",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"name\": \"nombre oficina\",\r\n        \"claimTypeId\": 1,\r\n        \"active\": 1\r\n}",
+					"raw": "{\r\n        \"name\": \"nueva oficina\",\r\n        \"claimTypeId\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -244,13 +338,13 @@
 			"response": []
 		},
 		{
-			"name": "Add User to Office",
+			"name": "Update Office (admin)",
 			"request": {
-				"method": "POST",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"name\": \"nombre oficina\",\r\n        \"claimTypeId\": 1,\r\n        \"active\": 1\r\n}",
+					"raw": "{\r\n    \"active\": 0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -258,7 +352,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/offices",
+					"raw": "http://localhost:8080/api/offices/6",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -266,14 +360,47 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"offices"
+						"offices",
+						"6"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Delete User from Office",
+			"name": "Add User to Office (admin)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"employeeId\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/offices/5/employees/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"offices",
+						"5",
+						"employees",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User from Office (admin)",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -305,13 +432,26 @@
 			"response": []
 		},
 		{
-			"name": "Auth Login",
+			"name": "Get Statistics (admin)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
-				"method": "POST",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA3NzczMzYsImV4cCI6MTczMDg2MzczNn0.XqnbFflTAtqoh5SLNxavlWlZjjr2xpBOYykOgIfi644",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"jramirez@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -319,7 +459,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/auth/login",
+					"raw": "http://localhost:8080/api/reports/statistics",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -327,15 +467,15 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"auth",
-						"login"
+						"reports",
+						"statistics"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Auth me",
+			"name": "Export file (admin)",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -344,7 +484,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"jramirez@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -352,7 +492,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/auth/me",
+					"raw": "http://localhost:8080/api/reports/download/pdf",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -360,8 +500,303 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"auth",
-						"me"
+						"reports",
+						"download",
+						"pdf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get claim types (admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA3NzczMzYsImV4cCI6MTczMDg2MzczNn0.XqnbFflTAtqoh5SLNxavlWlZjjr2xpBOYykOgIfi644",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/claim-types",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"claim-types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create claim type (admin)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\": \"testeando\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/claim-types",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"claim-types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update claim type (admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA3NzczMzYsImV4cCI6MTczMDg2MzczNn0.XqnbFflTAtqoh5SLNxavlWlZjjr2xpBOYykOgIfi644",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\": \"nueva descripcion2\",\r\n    \"active\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/claim-types/15",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"claim-types",
+						"15"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get claims assigned to my office (employee)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/claims/assigned",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"claims",
+						"assigned"
+					],
+					"query": [
+						{
+							"key": "officeId",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Attend Claim (employee)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/claims/7/attend",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"claims",
+						"7",
+						"attend"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create claim (client)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJUeXBlIjoiY2xpZW50IiwiaWF0IjoxNzMwNjkxMzE5LCJleHAiOjE3MzA3Nzc3MTl9.2qYDjK61KA6G_EpxUxaPehvnvdZIKi_IK6qCdU_XS98",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"subject\": \"asunto test 2\",\r\n    \"description\":\"test 2\",\r\n    \"claimTypeId\": 14\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/claims/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"claims",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get my claims (client)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJUeXBlIjoiY2xpZW50IiwiaWF0IjoxNzMwNzc5MTUwLCJleHAiOjE3MzA4NjU1NTB9.8eRpSCzQs5NkjcBbtyHx7GKb7QDZOG6J9kwvGY1BT2k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/claims/my-claims",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"claims",
+						"my-claims"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel claim (client)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJUeXBlIjoiY2xpZW50IiwiaWF0IjoxNzMwNzc5MTUwLCJleHAiOjE3MzA4NjU1NTB9.8eRpSCzQs5NkjcBbtyHx7GKb7QDZOG6J9kwvGY1BT2k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/claims/26/cancel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"claims",
+						"26",
+						"cancel"
 					]
 				}
 			},

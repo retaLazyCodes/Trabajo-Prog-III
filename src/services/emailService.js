@@ -29,14 +29,12 @@ transporter.use('compile', hbs({
     extName: '.hbs'
 }));
 
-const sendEmail = async (req, res) => {
-    const { to, subject, userName, idClaim, statusClaim, dateUpdate } = req.body;
-
+const prepareEmailOptions = ({ to, subject, userName, idClaim, statusClaim, dateUpdate }) => {
     if (!to || !subject || !userName || !idClaim || !statusClaim || !dateUpdate) {
-        return res.status(400).json({ message: 'Faltan datos para enviar el correo' });
+        throw new Error('Faltan datos para enviar el correo');
     }
 
-    const mailOptions = {
+    return {
         from: NODEMAILER_EMAIL,
         to,
         subject,
@@ -48,15 +46,37 @@ const sendEmail = async (req, res) => {
             dateUpdate
         }
     };
+};
 
+const sendEmailWithOptions = async (mailOptions) => {
     try {
         const info = await transporter.sendMail(mailOptions);
         console.log('Email enviado: ', info.response);
-        res.status(200).json({ message: 'Correo enviado exitosamente', info });
+        return { success: true, info };
     } catch (error) {
         console.error('Error al enviar email:', error);
-        res.status(500).json({ error: 'Error al enviar email' });
+        throw new Error('Error al enviar email');
     }
 };
 
-export { sendEmail };
+const sendEmail = async (req, res) => {
+    try {
+        const mailOptions = prepareEmailOptions(req.body);
+        const result = await sendEmailWithOptions(mailOptions);
+        res.status(200).json({ message: 'Correo enviado exitosamente', info: result.info });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const sendEmailFromService = async (emailData) => {
+    try {
+        const mailOptions = prepareEmailOptions(emailData);
+        const result = await sendEmailWithOptions(mailOptions);
+        return result;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+export { sendEmail, sendEmailFromService };
