@@ -37,19 +37,8 @@ const updateClaimType = async (req, res) => {
         res.status(200).json({ message: 'Claim type updated successfully' });
     } catch (err) {
         console.error('Error updating claim type:', err);
-        res.status(500).json({ error: 'Error updating calim type' });
+        res.status(500).json({ error: 'Error updating claim type' });
     }
 };
 
-const removeClaimType = async (req, res) => {
-    const { claimTypeId } = req.params;
-    try {
-        await ClaimTypeService.removeClaimType(claimTypeId);
-        res.status(200).json({ message: 'Claim type removed successfully' });
-    } catch (err) {
-        console.error('Error removing claim type:', err);
-        res.status(500).json({ error: 'Error removing claim type' });
-    }
-};
-
-export { getAllClaimTypes, createClaimType, updateClaimType, removeClaimType };
+export { getAllClaimTypes, createClaimType, updateClaimType };

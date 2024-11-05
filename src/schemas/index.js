@@ -1,6 +1,6 @@
 import { userSchema, updateUserSchema } from './userSchema.js';
 import { officeSchema, updateOfficeSchema } from './officeSchema.js';
-import { claimSchema, claimTypeSchema } from './claimSchema.js';
+import { claimSchema, claimTypeSchema, updateClaimTypeSchema } from './claimSchema.js';
 
 export {
     userSchema,
@@ -9,4 +9,5 @@ export {
     updateOfficeSchema,
     claimSchema,
     claimTypeSchema,
+    updateClaimTypeSchema
 };

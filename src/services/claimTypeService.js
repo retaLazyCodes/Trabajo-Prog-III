@@ -1,11 +1,21 @@
 import { pool } from '../config/db.js';
+import { ClaimType } from '../models/claimType.js';
 import { mapClaimType } from '../models/utils.js';
 
 class ClaimTypeService {
     static async getAllClaimTypes () {
         try {
             const [rows] = await pool.query('SELECT * FROM reclamos_tipo WHERE activo = 1');
-            return rows.length ? rows : [];
+            if (rows.length) {
+                return rows.map((record) =>
+                    new ClaimType(
+                        record.idReclamoTipo,
+                        record.descripcion,
+                        record.activo
+                    )
+                );
+            }
+            return [];
         } catch (err) {
             console.error('Error finding claim type', err);
             throw err;
@@ -32,7 +42,7 @@ class ClaimTypeService {
                 'INSERT INTO reclamos_tipo (descripcion, activo) VALUES (?, ?)',
                 [description, 1]
             );
-            return { id: result.insertId, description, activo: 1 };
+            return { id: result.insertId, description, active: 1 };
         } catch (err) {
             console.error('Error creating claim type:', err);
             throw err;
