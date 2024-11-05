@@ -5,7 +5,7 @@ import { Office } from '../models/office.js';
 class OfficeService {
     static async getAllOffices () {
         try {
-            const [rows] = await pool.query('SELECT oficinas.idOficina, oficinas.nombre AS nombreOficina, oficinas.idReclamoTipo,  usuarios.idUsuario, usuarios.nombre AS nombreUsuario, usuarios.apellido AS apellidoUsuario FROM oficinas INNER JOIN usuarios_oficinas ON oficinas.idOficina = usuarios_oficinas.idOficina INNER JOIN usuarios ON usuarios_oficinas.idUsuario = usuarios.idUsuario WHERE oficinas.activo = 1 AND usuarios_oficinas.activo = 1;');
+            const [rows] = await pool.query('SELECT oficinas.idOficina, oficinas.nombre AS nombreOficina, oficinas.idReclamoTipo,  usuarios.idUsuario, usuarios.nombre AS nombreUsuario, usuarios.apellido AS apellidoUsuario FROM oficinas     LEFT JOIN usuarios_oficinas ON oficinas.idOficina = usuarios_oficinas.idOficina AND usuarios_oficinas.activo = 1  LEFT JOIN usuarios ON usuarios_oficinas.idUsuario = usuarios.idUsuario     WHERE oficinas.activo = 1;');
             const offices = {};
             rows.forEach(row => {
                 const { idOficina, nombreOficina, idReclamoTipo, idUsuario, nombreUsuario, apellidoUsuario } = row;
