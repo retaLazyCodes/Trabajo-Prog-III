@@ -5,16 +5,26 @@ import { Office } from '../models/office.js';
 class OfficeService {
     static async getAllOffices () {
         try {
-            const [rows] = await pool.query('SELECT * FROM oficinas WHERE activo = 1');
-            if (rows.length) {
-                return rows.map((office) =>
-                    new Office(office.idOficina,
-                        office.nombre,
-                        office.idReclamoTipo,
-                        office.activo)
-                );
-            }
-            return [];
+            const [rows] = await pool.query('SELECT oficinas.idOficina, oficinas.nombre AS nombreOficina, oficinas.idReclamoTipo,  usuarios.idUsuario, usuarios.nombre AS nombreUsuario, usuarios.apellido AS apellidoUsuario FROM oficinas INNER JOIN usuarios_oficinas ON oficinas.idOficina = usuarios_oficinas.idOficina INNER JOIN usuarios ON usuarios_oficinas.idUsuario = usuarios.idUsuario WHERE oficinas.activo = 1 AND usuarios_oficinas.activo = 1;');
+            const offices = {};
+            rows.forEach(row => {
+                const { idOficina, nombreOficina, idReclamoTipo, idUsuario, nombreUsuario, apellidoUsuario } = row;
+
+                if (!offices[idOficina]) {
+                    offices[idOficina] = {
+                        idOficina,
+                        nombreOficina,
+                        idReclamoTipo,
+                        empleados: []
+                    };
+                }
+                offices[idOficina].empleados.push({
+                    idUsuario,
+                    nombreUsuario,
+                    apellidoUsuario
+                });
+            });
+            return Object.values(offices);
         } catch (err) {
             console.error('Error finding office by ID:', err);
             throw err;
