@@ -30,7 +30,10 @@ const userSchema = Joi.object({
     image: Joi.binary()
         .messages({
             'binary.base': 'La imagen debe ser un archivo.'
-        })
+        }),
+    userType: Joi.number()
+        .positive()
+        .integer()
 });
 
 const updateUserSchema = Joi.object({

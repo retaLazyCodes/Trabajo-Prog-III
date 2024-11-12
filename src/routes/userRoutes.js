@@ -21,7 +21,7 @@ router.get(
 router.post(
     '/',
     authMiddleware,
-    authorizeRoles('admin'),
+    authorizeRoles('admin', 'client'),
     upload,
     validateUser,
     createUser

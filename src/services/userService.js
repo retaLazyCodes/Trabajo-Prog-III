@@ -56,9 +56,12 @@ class UserService {
         }
     }
 
-    static async create (userData, file) {
+    static async create(userData, file, userType) {
+        const userTypeList = [1, 2, 3]
+        if (!userTypeList.includes(userType)){
+            throw new Error('Error creating user:', err)
+        }
         const { name, lastname, email, password } = userData;
-        const USER_TYPE = 2; // Empleado
         try {
             let imagePath = null;
             if (file) {
@@ -66,14 +69,15 @@ class UserService {
             }
             const [result] = await pool.query(
                 'INSERT INTO usuarios (nombre, apellido, correoElectronico, contrasenia, idUsuarioTipo, imagen, activo) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [name, lastname, email, password, USER_TYPE, imagePath, 1]
+                [name, lastname, email, password, userType, imagePath, 1]
             );
-            return new User(result.insertId, name, lastname, email, password, USER_TYPE, imagePath, 1);
+            return new User(result.insertId, name, lastname, email, password, userType, imagePath, 1);
         } catch (err) {
             console.error('Error creating user:', err);
             throw err;
         }
     }
+    
 
     static async update (fieldsToUpdate, values, file) {
         try {
