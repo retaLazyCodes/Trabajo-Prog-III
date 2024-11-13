@@ -13,7 +13,7 @@ const getUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-        const { email, password, userType } = req.body;
+        const { email, password } = req.body;
         const userExists = await UserService.findByEmail(email);
         if (userExists) {
             return res.status(409).json({ message: 'Email is already taken' });
@@ -26,7 +26,7 @@ const createUser = async (req, res) => {
         const newUser = await UserService.create({
             ...req.body,
             password: hashedPassword
-        }, req.file, userType);
+        }, req.file);
         res.status(201).json(newUser);
     } catch (err) {
         console.error('Error creating user:', err);
