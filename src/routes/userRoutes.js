@@ -2,7 +2,8 @@ import { Router } from 'express';
 import {
     getUsers,
     createUser,
-    updateUser
+    updateUser,
+    createClient
 } from '../controllers/userController.js';
 import { validateUser, validateUpdateUser } from '../middlewares/validateUser.js';
 import { upload } from '../services/imageService.js';
@@ -26,6 +27,11 @@ router.post(
     validateUser,
     createUser
 );
+
+router.post(
+    '/register',
+    createClient
+)
 
 router.patch(
     '/:id',

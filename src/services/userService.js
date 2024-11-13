@@ -74,6 +74,26 @@ class UserService {
             throw err;
         }
     }
+    
+    static async createClient(userData, file) {
+        const { name, lastname, email, password } = userData;
+        const USER_TYPE = 3; // Cliente
+        try {
+            let imagePath = null;
+            if (file) {
+                imagePath = `http://localhost:${config.server.PORT}/uploads/` + file.filename;
+            }
+            const [result] = await pool.query(
+                'INSERT INTO usuarios (nombre, apellido, correoElectronico, contrasenia, idUsuarioTipo, imagen, activo) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                [name, lastname, email, password, USER_TYPE, imagePath, 1]
+            );
+            return new User(result.insertId, name, lastname, email, password, USER_TYPE, imagePath, 1);
+        } catch (err) {
+            console.error('Error creating client:', err);
+            throw err;
+        }
+    }
+    
 
     static async update (fieldsToUpdate, values, file) {
         try {
