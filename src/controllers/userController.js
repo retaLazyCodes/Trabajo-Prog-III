@@ -34,6 +34,30 @@ const createUser = async (req, res) => {
     }
 };
 
+const createClient = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const userExists = await UserService.findByEmail(email);
+        if (userExists) {
+            return res.status(409).json({ message: 'Email is already taken' });
+        }
+
+        // Encriptar la contraseña antes de guardar
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const newClient = await UserService.createClient({
+            ...req.body,
+            password: hashedPassword
+        }, req.file);
+        res.status(201).json(newClient);
+    } catch (err) {
+        console.error('Error creating client:', err);
+        res.status(500).json({ error: 'Error creating client' });
+    }
+};
+
+
 
 const updateUser = async (req, res) => {
     const { id } = req.params;
@@ -84,4 +108,4 @@ const updateUser = async (req, res) => {
     }
 };
 
-export { getUsers, createUser, updateUser };
+export { getUsers, createUser, updateUser, createClient };
