@@ -1,34 +1,28 @@
-import { pool } from '../config/db.js';
 import { ClaimType } from '../models/claimType.js';
 import { mapClaimType } from '../models/utils.js';
+import { ClaimTypeDAO } from '../dao/claimTypeDao.js';
 
 class ClaimTypeService {
     static async getAllClaimTypes () {
         try {
-            const [rows] = await pool.query('SELECT * FROM reclamos_tipo WHERE activo = 1');
-            if (rows.length) {
-                return rows.map((record) =>
-                    new ClaimType(
-                        record.idReclamoTipo,
-                        record.descripcion,
-                        record.activo
-                    )
-                );
-            }
-            return [];
+            const rows = await ClaimTypeDAO.getAllClaimTypes();
+            return rows.map((record) =>
+                new ClaimType(
+                    record.idReclamoTipo,
+                    record.descripcion,
+                    record.activo
+                )
+            );
         } catch (err) {
-            console.error('Error finding claim type', err);
+            console.error('Error finding claim type:', err);
             throw err;
         }
     }
 
     static async findClaimTypesById (claimTypeId) {
         try {
-            const [rows] = await pool.query('SELECT * FROM reclamos_tipo WHERE idReclamoTipo = ?', [claimTypeId]);
-            if (rows.length) {
-                return rows[0];
-            }
-            return null;
+            const rows = await ClaimTypeDAO.findClaimTypeById(claimTypeId);
+            return rows.length ? rows[0] : null;
         } catch (err) {
             console.error('Error finding claim type by ID:', err);
             throw err;
@@ -38,10 +32,7 @@ class ClaimTypeService {
     static async createClaimType (claimTypeData) {
         const { description } = claimTypeData;
         try {
-            const [result] = await pool.query(
-                'INSERT INTO reclamos_tipo (descripcion, activo) VALUES (?, ?)',
-                [description, 1]
-            );
+            const result = await ClaimTypeDAO.createClaimType(description);
             return { id: result.insertId, description, active: 1 };
         } catch (err) {
             console.error('Error creating claim type:', err);
@@ -51,12 +42,10 @@ class ClaimTypeService {
 
     static async updateClaimType (fieldsToUpdate, values) {
         try {
-            // Mapear cada campo a la sintaxis 'campo = ?' para el query
             const mappedFields = mapClaimType(fieldsToUpdate);
-            const query = `UPDATE reclamos_tipo SET ${mappedFields.join(', ')} WHERE idReclamoTipo = ?`;
-            return await pool.query(query, values);
+            return await ClaimTypeDAO.updateClaimType(mappedFields, values);
         } catch (err) {
-            console.error('Error updating Claim Type:', err);
+            console.error('Error updating claim type:', err);
             throw err;
         }
     }

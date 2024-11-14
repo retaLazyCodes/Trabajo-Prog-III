@@ -30,8 +30,9 @@ router.post(
 
 router.post(
     '/register',
+    validateUser,
     createClient
-)
+);
 
 router.patch(
     '/:id',
