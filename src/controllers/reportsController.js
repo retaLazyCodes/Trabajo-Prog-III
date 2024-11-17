@@ -17,8 +17,8 @@ const getStatistics = async (req, res) => {
 
 const userStaticsByOffice = async (req, res) => {
     try {
-        const statistics = await ReportsService.userStaticsByOffice();
-        res.status(200).json(statistics);
+        const userstatics = await ReportsService.userStaticsByOffice();
+        res.status(200).json(userstatics);
     } catch (error) {
         res.status(500).json({ error: 'Error statistics not found' });
     }

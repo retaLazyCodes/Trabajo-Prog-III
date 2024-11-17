@@ -21,6 +21,8 @@ router.get(
 
 router.get(
     '/staticsuser',
+    /*authMiddleware,
+    authorizeRoles('admin'),*/
     userStaticsByOffice
 );
 
