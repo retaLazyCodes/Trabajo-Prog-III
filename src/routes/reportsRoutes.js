@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getStatistics, downloadClaims } from '../controllers/reportsController.js';
+import { getStatistics, downloadClaims, userStaticsByOffice } from '../controllers/reportsController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import { authorizeRoles } from '../middlewares/authorizeRoles.js';
 
@@ -17,6 +17,11 @@ router.get(
     authMiddleware,
     authorizeRoles('admin'),
     downloadClaims
+);
+
+router.get(
+    '/staticsuser',
+    userStaticsByOffice
 );
 
 export default router;
