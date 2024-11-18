@@ -1,11 +1,11 @@
-import { pool } from '../config/db.js';
+import { OfficeDAO } from '../dao/officeDao.js';
 import { mapOffices } from '../models/utils.js';
 import { Office } from '../models/office.js';
 
 class OfficeService {
     static async getAllOffices () {
         try {
-            const [rows] = await pool.query('SELECT oficinas.idOficina, oficinas.nombre AS nombreOficina, oficinas.idReclamoTipo,  usuarios.idUsuario, usuarios.nombre AS nombreUsuario, usuarios.apellido AS apellidoUsuario FROM oficinas     LEFT JOIN usuarios_oficinas ON oficinas.idOficina = usuarios_oficinas.idOficina AND usuarios_oficinas.activo = 1  LEFT JOIN usuarios ON usuarios_oficinas.idUsuario = usuarios.idUsuario     WHERE oficinas.activo = 1;');
+            const rows = await OfficeDAO.getAllOffices();
             const offices = {};
             rows.forEach(row => {
                 const { idOficina, nombreOficina, idReclamoTipo, idUsuario, nombreUsuario, apellidoUsuario } = row;
@@ -28,17 +28,17 @@ class OfficeService {
             });
             return Object.values(offices);
         } catch (err) {
-            console.error('Error finding office by ID:', err);
+            console.error('Error finding offices:', err);
             throw err;
         }
     }
 
     static async findOfficeById (officeId) {
         try {
-            const [rows] = await pool.query('SELECT * FROM oficinas WHERE idOficina = ?', [officeId]);
-            if (rows.length) {
-                const office = rows[0];
-                return new Office(office.idOficina,
+            const office = await OfficeDAO.findOfficeById(officeId);
+            if (office) {
+                return new Office(
+                    office.idOficina,
                     office.nombre,
                     office.idReclamoTipo,
                     office.activo
@@ -52,13 +52,9 @@ class OfficeService {
     }
 
     static async createOffice (officeData) {
-        const { name, claimTypeId } = officeData;
         try {
-            const [result] = await pool.query(
-                'INSERT INTO oficinas (nombre, idReclamoTipo, activo) VALUES (?, ?, ?)',
-                [name, claimTypeId, 1]
-            );
-            return new Office(result.insertId, name, claimTypeId, 1);
+            const officeId = await OfficeDAO.createOffice(officeData);
+            return new Office(officeId, officeData.name, officeData.claimTypeId, 1);
         } catch (err) {
             console.error('Error creating Office:', err);
             throw err;
@@ -69,7 +65,7 @@ class OfficeService {
         try {
             const mappedFields = mapOffices(fieldsToUpdate);
             const query = `UPDATE oficinas SET ${mappedFields.join(', ')} WHERE idOficina = ?`;
-            return await pool.query(query, values);
+            await OfficeDAO.updateOffice(query, values);
         } catch (err) {
             console.error('Error updating Office:', err);
             throw err;
@@ -78,7 +74,7 @@ class OfficeService {
 
     static async removeOffice (officeId) {
         try {
-            await pool.query('DELETE FROM oficinas WHERE idOficina = ?', [officeId]);
+            await OfficeDAO.removeOffice(officeId);
         } catch (err) {
             console.error('Error removing office:', err);
             throw err;
@@ -87,7 +83,7 @@ class OfficeService {
 
     static async addEmployee (officeId, employeeId) {
         try {
-            await pool.query('INSERT INTO usuarios_oficinas (idOficina, idUsuario) VALUES (?, ?)', [officeId, employeeId]);
+            await OfficeDAO.addEmployee(officeId, employeeId);
         } catch (err) {
             console.error('Error adding employee to office:', err);
             throw err;
@@ -96,7 +92,7 @@ class OfficeService {
 
     static async removeEmployee (officeId, employeeId) {
         try {
-            await pool.query('DELETE FROM usuarios_oficinas WHERE idOficina = ? AND idUsuario = ?', [officeId, employeeId]);
+            await OfficeDAO.removeEmployee(officeId, employeeId);
         } catch (err) {
             console.error('Error removing employee from office:', err);
             throw err;
@@ -105,11 +101,7 @@ class OfficeService {
 
     static async employeeOfficeById (employeeId, officeId) {
         try {
-            const [rows] = await pool.query('SELECT * FROM usuarios_oficinas WHERE idUsuario = ? AND idOficina = ?', [employeeId, officeId]);
-            if (rows.length) {
-                return rows[0];
-            }
-            return null;
+            return await OfficeDAO.employeeOfficeById(employeeId, officeId);
         } catch (err) {
             console.error('Error finding user in office by ID:', err);
             throw err;
