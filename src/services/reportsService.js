@@ -26,6 +26,16 @@ class ReportsService {
             throw err;
         }
     }
+
+    static async userStaticsByOffice () {
+        try {
+            const [rows] = await ReportsDAO.userStaticsByOffice();
+            return rows;
+        } catch (err) {
+            console.error('Error finding statistics:', err);
+            throw err;
+        }
+    }
 }
 
 export { ReportsService };
