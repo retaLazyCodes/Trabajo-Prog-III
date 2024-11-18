@@ -1,6 +1,6 @@
 DELIMITER $$
 
-CREATE PROCEDURE userStaticsByOffice()
+CREATE PROCEDURE user_statics_by_office()
 BEGIN
    SELECT 
     oficinas.idOficina AS idOficina,
