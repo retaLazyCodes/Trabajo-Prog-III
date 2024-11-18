@@ -53,7 +53,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"brianretamar0101@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"raw": "{\r\n    \"email\": \"pepi@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -120,6 +120,46 @@
 			"response": []
 		},
 		{
+			"name": "Register Client",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInVzZXJUeXBlIjoyLCJpYXQiOjE3Mjg1MTcxOTAsImV4cCI6MTcyODYwMzU5MH0.igK-m5pwi1SL0gLnwbBMkA55mq68tesN9ZMwE-ih798",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Pedro\",\r\n    \"lastname\": \"Ladanaj\",\r\n    \"email\": \"pepi@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create User (admin)",
 			"request": {
 				"method": "POST",
@@ -177,16 +217,6 @@
 				"disableBodyPruning": true
 			},
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA3NzczMzYsImV4cCI6MTczMDg2MzczNn0.XqnbFflTAtqoh5SLNxavlWlZjjr2xpBOYykOgIfi644",
-							"type": "string"
-						}
-					]
-				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -262,16 +292,6 @@
 				"disableBodyPruning": true
 			},
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA3NzczMzYsImV4cCI6MTczMDg2MzczNn0.XqnbFflTAtqoh5SLNxavlWlZjjr2xpBOYykOgIfi644",
-							"type": "string"
-						}
-					]
-				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -301,16 +321,6 @@
 		{
 			"name": "Create Office (admin)",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA3NzczMzYsImV4cCI6MTczMDg2MzczNn0.XqnbFflTAtqoh5SLNxavlWlZjjr2xpBOYykOgIfi644",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -437,16 +447,6 @@
 				"disableBodyPruning": true
 			},
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA3NzczMzYsImV4cCI6MTczMDg2MzczNn0.XqnbFflTAtqoh5SLNxavlWlZjjr2xpBOYykOgIfi644",
-							"type": "string"
-						}
-					]
-				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -469,6 +469,39 @@
 						"api",
 						"reports",
 						"statistics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users Statistics (admin)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/reports/staticsuser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"reports",
+						"staticsuser"
 					]
 				}
 			},
@@ -511,16 +544,6 @@
 		{
 			"name": "Get claim types (admin)",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA3NzczMzYsImV4cCI6MTczMDg2MzczNn0.XqnbFflTAtqoh5SLNxavlWlZjjr2xpBOYykOgIfi644",
-							"type": "string"
-						}
-					]
-				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -570,16 +593,6 @@
 		{
 			"name": "Update claim type (admin)",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA3NzczMzYsImV4cCI6MTczMDg2MzczNn0.XqnbFflTAtqoh5SLNxavlWlZjjr2xpBOYykOgIfi644",
-							"type": "string"
-						}
-					]
-				},
 				"method": "PATCH",
 				"header": [],
 				"body": {
@@ -686,7 +699,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJUeXBlIjoiY2xpZW50IiwiaWF0IjoxNzMwNjkxMzE5LCJleHAiOjE3MzA3Nzc3MTl9.2qYDjK61KA6G_EpxUxaPehvnvdZIKi_IK6qCdU_XS98",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA5MjY5MTMsImV4cCI6MTczMTAxMzMxM30.j2aew2OmaxC98gSHjf-LAeaXtyLTapsBHwCCvKZ89KA",
 							"type": "string"
 						}
 					]
@@ -729,7 +742,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJUeXBlIjoiY2xpZW50IiwiaWF0IjoxNzMwNzc5MTUwLCJleHAiOjE3MzA4NjU1NTB9.8eRpSCzQs5NkjcBbtyHx7GKb7QDZOG6J9kwvGY1BT2k",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA5MjY5MTMsImV4cCI6MTczMTAxMzMxM30.j2aew2OmaxC98gSHjf-LAeaXtyLTapsBHwCCvKZ89KA",
 							"type": "string"
 						}
 					]
@@ -769,7 +782,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJUeXBlIjoiY2xpZW50IiwiaWF0IjoxNzMwNzc5MTUwLCJleHAiOjE3MzA4NjU1NTB9.8eRpSCzQs5NkjcBbtyHx7GKb7QDZOG6J9kwvGY1BT2k",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA5MjY5MTMsImV4cCI6MTczMTAxMzMxM30.j2aew2OmaxC98gSHjf-LAeaXtyLTapsBHwCCvKZ89KA",
 							"type": "string"
 						}
 					]
@@ -801,6 +814,38 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE3MzA5MjY5MTMsImV4cCI6MTczMTAxMzMxM30.j2aew2OmaxC98gSHjf-LAeaXtyLTapsBHwCCvKZ89KA",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

@@ -15,6 +15,15 @@ const getStatistics = async (req, res) => {
     }
 };
 
+const userStaticsByOffice = async (req, res) => {
+    try {
+        const userstatics = await ReportsService.userStaticsByOffice();
+        res.status(200).json(userstatics);
+    } catch (error) {
+        res.status(500).json({ error: 'Error statistics not found' });
+    }
+};
+
 const downloadClaims = async (req, res) => {
     const { format } = req.params;
 
@@ -80,4 +89,4 @@ const downloadClaims = async (req, res) => {
     }
 };
 
-export { getStatistics, downloadClaims };
+export { getStatistics, downloadClaims, userStaticsByOffice };
