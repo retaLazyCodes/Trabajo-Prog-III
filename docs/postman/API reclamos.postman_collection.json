@@ -475,6 +475,39 @@
 			"response": []
 		},
 		{
+			"name": "Get Users Statistics (admin)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/reports/staticsuser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"reports",
+						"staticsuser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Export file (admin)",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
