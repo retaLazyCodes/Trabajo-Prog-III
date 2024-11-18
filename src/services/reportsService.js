@@ -29,7 +29,7 @@ class ReportsService {
 
     static async userStaticsByOffice () {
         try {
-            const [rows] = await pool.query('CALL user_statics_by_office()');
+            const [rows] = await ReportsDAO.userStaticsByOffice();
             return rows;
         } catch (err) {
             console.error('Error finding statistics:', err);

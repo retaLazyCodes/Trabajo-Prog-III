@@ -43,9 +43,4 @@ router.patch(
     updateUser
 );
 
-router.get(
-    '/statistics',
-    authMiddleware,
-    authorizeRoles('admin')
-);
 export default router;
