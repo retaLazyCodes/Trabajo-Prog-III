@@ -1,12 +1,10 @@
 import { Router } from 'express';
 import {
-    getUsers,
-    createUser,
-    updateUser,
-    createClient
-} from '../controllers/userController.js';
-import { validateUser, validateUpdateUser } from '../middlewares/validateUser.js';
-import { upload } from '../services/imageService.js';
+    getAllClaimTypes,
+    createClaimType,
+    updateClaimType
+} from '../controllers/claimTypeController.js';
+import { validateClaimType, validateUpdateClaimType } from '../middlewares/validateClaim.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import { authorizeRoles } from '../middlewares/authorizeRoles.js';
 
@@ -16,31 +14,23 @@ router.get(
     '/',
     authMiddleware,
     authorizeRoles('admin'),
-    getUsers
+    getAllClaimTypes
 );
 
 router.post(
     '/',
     authMiddleware,
     authorizeRoles('admin'),
-    upload,
-    validateUser,
-    createUser
-);
-
-router.post(
-    '/register',
-    validateUser,
-    createClient
+    validateClaimType,
+    createClaimType
 );
 
 router.patch(
-    '/:id',
+    '/:claimTypeId',
     authMiddleware,
     authorizeRoles('admin'),
-    upload,
-    validateUpdateUser,
-    updateUser
+    validateUpdateClaimType,
+    updateClaimType
 );
 
 export default router;

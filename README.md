@@ -1,5 +1,7 @@
 # Trabajo-Prog-III
 
+[![ estilo js-semistandard ](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/standard/semistandard)
+
 ### Trabajo Integrador - Programación III
 
 # Índice
@@ -82,23 +84,25 @@ Los servicios encapsulan la lógica de procesos específicos que pueden ser reut
 
 Contiene plantillas de correos electrónicos o documentos que se generen dinámicamente.
 
-#### 10. **app.js**
+#### 10. **/docs**
+
+Contiene las colecciones utilizadas en Postman y los archivos necesarios para las pruebas.
+
+#### 11. **app.js**
 
 Archivo principal que configura el servidor Express. Aquí se cargan los middlewares, rutas, y se inicializa la aplicación.
 
-#### 11. **README.md**
+#### 12. **README.md**
 
 Instrucciones y documentación básica sobre cómo ejecutar el proyecto.
 
-#### 12. **.gitignore**
+#### 13. **.gitignore**
 
 Archivo que define qué archivos o carpetas deben ser ignorados por Git (como node_modules o archivos de configuración locales).
 
-#### 13. **package.json**
+#### 14. **package.json**
 
 Definen las dependencias del proyecto y versiones exactas para mantener consistencia en los entornos de desarrollo.
-
-## Dependencias
 
 ## Dependencias
 
@@ -112,10 +116,17 @@ Este proyecto usa las siguientes librerías:
 - [Handlebars](https://www.npmjs.com/package/handlebars): Motor de plantillas para generar HTML dinámico.
 - [Joi](https://www.npmjs.com/package/joi): Librería para validación de datos.
 - [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken): Implementación de JSON Web Tokens (JWT) para autenticación.
+- [Bcryptjs](https://www.npmjs.com/package/bcryptjs): Implementación de bcrypt.js para autenticación.
+- [Multer](https://www.npmjs.com/package/multer): Implementación de Multer para el manejo de archivos.
+- [Nodemailer](https://www.npmjs.com/package/nodemailer): Implementación de Nodemailer para generar HTML dinámico.
+- [Nodemailer-express-handlebars](https://www.npmjs.com/package/nodemailer-express-handlebars): Implementación de Nodemailer para generar HTML dinámico.
+- [Csv-writer](https://www.npmjs.com/package/csv-writer): Implementación de Csv-writer para generar archivos CSV.
+- [Puppeteer](https://www.npmjs.com/package/puppeteer): Implementación de Puppeteer para controlar Chrome o Firefox a través del protocolo DevTools o WebDriver BiDi.
 
 ### Librerías de desarrollo
 
 - [Nodemon](https://www.npmjs.com/package/nodemon): Herramienta que reinicia automáticamente el servidor al detectar cambios en los archivos durante el desarrollo.
+- [Semistandard](https://www.npmjs.com/package/semistandard): Herramienta que comprueba el estilo de todos los archivos JavaScript durante el desarrollo.
 
 ## Instalación y Configuración
 
