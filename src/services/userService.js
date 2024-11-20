@@ -1,5 +1,6 @@
 import { UserDAO } from '../dao/userDao.js';
 import { config } from '../config/index.js';
+import { mapFields } from '../models/utils.js';
 
 class UserService {
     static async getAll () {
@@ -61,7 +62,8 @@ class UserService {
                 const imagePath = `http://localhost:${config.server.PORT}/uploads/${file.filename}`;
                 values.splice(values.length - 1, 0, imagePath);
             }
-            return await UserDAO.updateUser(fieldsToUpdate, values);
+            const mappedFields = mapFields(fieldsToUpdate);
+            return await UserDAO.updateUser(mappedFields, values);
         } catch (err) {
             console.error('Error updating user:', err);
             throw err;
